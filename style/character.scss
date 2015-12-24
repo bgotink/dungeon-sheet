@@ -1,0 +1,28 @@
+@import "bootstrap-flex";
+
+.text-highlight {
+  font-weight: bold;
+}
+
+.table-center {
+  th, td {
+    text-align: center;
+  }
+}
+
+.inline-image {
+  display: inline-block;
+  width: auto;
+  height: 1rem;
+  vertical-align: text-bottom;
+}
+
+.checkmark__circle {
+  fill: transparent;
+  stroke: $text-muted;
+  stroke-width: 6;
+}
+
+.fill-in {
+  text-decoration: underline;
+}

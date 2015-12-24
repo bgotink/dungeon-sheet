@@ -1,0 +1,36 @@
+mixin dndBlock(title)
+  .row
+    .col-sm-12
+      .card.card-block
+        h3.card-title= title
+        .card-text
+          block
+
+mixin checkmark(checked)
+  svg.inline-image.checkmark(
+    version="1.1"
+    x="0px"
+    y="0px"
+    viewBox="0 0 60 60"
+    enable-background="new 0 0 60 60"
+    xml:space="preserve"
+  )
+    g
+      circle.checkmark__circle(
+        cx="30"
+        cy="30"
+        r="24"
+      )
+      if checked
+        path.checkmark__check(
+          d="M44.3074837,20.0561504L25.4431305,38.9214478l-9.74718-9.7467079c-0.1889086-0.1889076-0.4949398-0.1889076-0.6838474,0    s-0.1889076,0.4949398,0,0.6838474l10.0891027,10.0886326c0.0906773,0.0906754,0.2134666,0.1416779,0.3419247,0.1416779    s0.2512474-0.0510025,0.3419228-0.1416779l19.2062759-19.207222c0.1889076-0.1889076,0.1889076-0.4949379,0-0.6838474    C44.8024216,19.8672428,44.4963913,19.8672428,44.3074837,20.0561504z"
+        )
+
+mixin loop(count)
+  for i in Array(count + 1).join().split('')
+    block
+
+mixin fill-in(count)
+  span.fill-in
+    +loop(count)
+      | &nbsp;

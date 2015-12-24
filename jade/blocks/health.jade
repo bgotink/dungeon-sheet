@@ -1,0 +1,64 @@
+include ../mixins
+
+mixin savingThrowCell(stat)
+  if character.isSavingThrowProficient(stat)
+    td.text-highlight= character.getSavingThrow(stat)
+  else
+    td= character.getSavingThrow(stat)
+
++dndBlock('Health')
+  div
+    p Hit Die Used (#{character.getHitDie()}): #[+loop(character.getLevel()): +checkmark(false)]
+    p
+     | Current HP: 
+     +fill-in(15)
+     |  Temporary HP: 
+     +fill-in(15)
+    p
+      | Death Saves: 
+      | Success 
+      +checkmark()
+      +checkmark()
+      +checkmark()
+      |  Failed 
+      +checkmark()
+      +checkmark()
+      +checkmark()
+  div
+    h4 Saving Throws
+    table.table.table-sm.table-center
+      thead
+        tr
+          th STR
+          th DEX
+          th CON
+          th INT
+          th WIS
+          th CHA
+      tbody
+        tr
+          +savingThrowCell('STR')
+          +savingThrowCell('DEX')
+          +savingThrowCell('CON')
+          +savingThrowCell('INT')
+          +savingThrowCell('WIS')
+          +savingThrowCell('CHA')
+  div
+    h4 Armor Class
+    table.table.table-sm.table-center
+      thead
+        tr
+          th Armor
+          th DEX
+          th Shield
+          th Magic
+          th &nbsp;
+          th Total AC
+      tbody
+        tr
+          td 10#{character.getACArmor()}
+          td= character.getACDex()
+          td= character.getACShield()
+          td= character.getACMagic()
+          td &nbsp;
+          td= character.getAC()

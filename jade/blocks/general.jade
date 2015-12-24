@@ -1,0 +1,55 @@
+include ../mixins
+
++dndBlock('General Information')
+  div
+    table.table.table-sm.table-center
+      thead
+        tr
+          th STR
+          th DEX
+          th CON
+          th INT
+          th WIS
+          th CHA
+          th &nbsp;
+          th EXP
+      tbody
+        tr
+          td= character.getStat('STR')
+          td= character.getStat('DEX')
+          td= character.getStat('CON')
+          td= character.getStat('INT')
+          td= character.getStat('WIS')
+          td= character.getStat('CHA')
+          td &nbsp;
+          td &nbsp;
+        tr.text-highlight.table-active
+          td= character.getStatModifier('STR')
+          td= character.getStatModifier('DEX')
+          td= character.getStatModifier('CON')
+          td= character.getStatModifier('INT')
+          td= character.getStatModifier('WIS')
+          td= character.getStatModifier('CHA')
+          td &nbsp;
+          td= character.getExperience()
+  div
+    table.table.table-sm.table-center
+      thead
+        tr
+          th HP
+          th Prof
+          th Init
+          th SPD
+          th Inspiration
+          th &nbsp;
+          th Level
+      tbody
+        tr.text-highlight
+          td= character.getHitPoints()
+          td= character.getProfiencyBonus()
+          td= character.getInitiative()
+          td= character.getSpeed()
+          td
+            +checkmark(character.hasInspiration())
+          td &nbsp;
+          td= character.getLevel()

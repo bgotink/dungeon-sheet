@@ -1,0 +1,20 @@
+doctype
+html(lang='en')
+  head
+    title #{character.getName()} &mdash; L#{character.getLevel()} #{character.getRace()} #{character.getClass()}
+    link(rel='stylesheet', href='./character.css')
+  body
+    .container
+      .row
+        .col-sm-6
+        
+          h1= character.getName()
+          p.
+            #{character.getRace()} | #{character.getClass()} | #{character.getAlignment()}
+        
+          include jade/blocks/general
+          include jade/blocks/health
+
+        .col-sm-6
+          
+          +dndBlock('asdf')
