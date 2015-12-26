@@ -1,6 +1,6 @@
-@import "bootstrap-flex";
+@import "bootstrap";
 
-$character-block-size: 360px;
+$character-block-size: 300px;
 
 .character__container {
   display: flex;
@@ -48,4 +48,10 @@ $character-block-size: 360px;
 
 .fill-in {
   text-decoration: underline;
+}
+
+@media screen and (max-width: (2*$character-block-size + 21px)) {
+  .character__container {
+    max-height: none !important;
+  }
 }
