@@ -4,49 +4,51 @@ const Character = require('./character');
 
 module.exports = CharacterBuilder;
 
+const EMPTY_DATA = {
+  name: undefined,
+  level: undefined,
+  alignment: undefined,
+
+  playerName: undefined,
+  experience: undefined,
+
+  inspiration: undefined,
+
+  stats: {
+    STR: undefined,
+    DEX: undefined,
+    CON: undefined,
+    INT: undefined,
+    WIS: undefined,
+    CHA: undefined
+  },
+
+  hp: undefined,
+
+  speed: undefined,
+
+  ac: {
+    armor: undefined,
+    shield: undefined,
+    magic: undefined
+  },
+
+  proficiencies: {
+    skills: {},
+
+    languages: [ 'Common' ],
+
+    other: []
+  }
+};
+
 function CharacterBuilder() {
-  this.data = {
-    name: undefined,
-    level: undefined,
-    alignment: undefined,
-
-    playerName: undefined,
-    experience: undefined,
-
-    inspiration: undefined,
-
-    stats: {
-      STR: undefined,
-      DEX: undefined,
-      CON: undefined,
-      INT: undefined,
-      WIS: undefined,
-      CHA: undefined,
-    },
-
-    hp: undefined,
-
-    speed: undefined,
-
-    ac: {
-      armor: undefined,
-      shield: undefined,
-      magic: undefined,
-    },
-
-    proficiencies: {
-      skills: {},
-
-      languages: [ 'Common' ],
-
-      other: [],
-    }
-  };
+  this.data = Object.assign({}, EMPTY_DATA);
 
   this.modifiers = {
     class: undefined,
     race: undefined,
-    background: undefined,
+    background: undefined
   };
 
   this.experienceSet = false;
@@ -58,79 +60,133 @@ CharacterBuilder.prototype = {
     return new Character(this.data);
   },
 
+  bindFunction(fn) {
+    if (typeof fn === 'function') {
+      return fn.bind(this);
+    }
+
+    return this[fn].bind(this);
+  },
+
+  setBasic(key, value) {
+    if (this.data[key] !== undefined) {
+      throw new Error(`Character ${key} already set`);
+    }
+
+    this.data[key] = value;
+  },
+
+  getBasic(key) {
+    return this.data[key];
+  },
+
+  setLevel(val) {
+    if (this.levelSet) {
+      throw new Error('Character level already set');
+    }
+
+    if (this.experienceSet) {
+      throw new Error('Character experience set, level cannot be set explicitly');
+    }
+
+    this.data.level = val;
+    this.data.experience = Character.levelToExperience(val);
+
+    this.levelSet = true;
+  },
+
+  getLevel() {
+    return this.data.level;
+  },
+
+  setExperience(val) {
+    if (this.experienceSet) {
+      throw new Error('Character experience already set');
+    }
+
+    if (this.levelSet) {
+      throw new Error('Character level set, experience cannot be set explicitly');
+    }
+
+    this.data.experience = val;
+    this.data.level = Character.experienceToLevel(val);
+
+    this.experienceSet = true;
+  },
+
+  getExperience() {
+    return this.data.experience;
+  },
+
+  setModifier(modifier, val) {
+    if (this.modifiers[modifier]) {
+      throw new Error(`Character ${modifier} already set`);
+    }
+
+    this.modifiers[modifier] = new CharacterModifier(modifier, val, this);
+    this.data[modifier] = val;
+  },
+
+  getModifier(modifier) {
+    return this.modifiers[modifier];
+  },
+
+  isProficient(proficiencyType, value) {
+    if (!this.data.proficiencies[proficiencyType]) {
+      return false;
+    }
+
+    return !!this.data.proficiencies[proficiencyType][value];
+  },
+
+  makeProficient(proficiencyType, value) {
+    if (this.isProficient(proficiencyType, value)) {
+      throw new Error(`Character is already proficient in ${value}`);
+    }
+
+    if (!this.data.proficiencies[proficiencyType]) {
+      this.data.proficiencies[proficiencyType] = {};
+    }
+
+    this.data.proficiencies[proficiencyType][value] = true;
+  },
+
   getPublicApi() {
     const builder = this;
     const api = {};
 
-    [ 'name', 'alignment', 'playerName', 'inspiration', 'hp', 'speed' ].forEach(function (key) {
-      Object.defineProperty(api, key, {
-        set: function (val) {
-          if (builder.data[key] !== undefined) {
-            throw new Error('Character ' + key + ' already set');
-          }
-
-          builder.data[key] = val;
-        },
-        get: function () {
-          return builder.data[key];
-        },
+    function defineApiVariable(name, set, get) {
+      Object.defineProperty(api, name, {
+        set: builder.bindFunction(set),
+        get: builder.bindFunction(get)
       });
+    }
+
+    [ 'name', 'alignment', 'playerName', 'inspiration', 'hp', 'speed' ].forEach(function (key) {
+      defineApiVariable(
+        key,
+        function (val) {
+          this.setBasic(key, val);
+        },
+        function () {
+          return this.getBasic(key);
+        }
+      );
     });
 
-    Object.defineProperty(api, 'level', {
-      set: function (val) {
-        if (builder.levelSet) {
-          throw new Error('Character level already set');
-        }
-
-        if (builder.experienceSet) {
-          throw new Error('Character experience set, level cannot be set explicitly');
-        }
-
-        builder.data.level = val;
-        builder.data.experience = Character.levelToExperience(val);
-
-        builder.levelSet = true;
-      },
-      get: function () {
-        return builder.data.level;
-      }
-    });
-
-    Object.defineProperty(api, 'experience', {
-      set: function (val) {
-        if (builder.experienceSet) {
-          throw new Error('Character experience already set');
-        }
-
-        if (builder.levelSet) {
-          throw new Error('Character level set, experience cannot be set explicitly');
-        }
-
-        builder.data.experience = val;
-        builder.data.level = Character.experienceToLevel(val);
-
-        builder.experienceSet = true;
-      },
-      get: function () {
-        return builder.data.experience;
-      }
-    });
+    defineApiVariable('level', 'setLevel', 'getLevel');
+    defineApiVariable('experience', 'setExperience', 'getExperience');
 
     [ 'class', 'race', 'background' ].forEach(function (modifier) {
-      Object.defineProperty(api, modifier.charAt(0).toUpperCase() + modifier.substring(1), {
-        set: function (val) {
-          if (builder.modifiers[modifier]) {
-            throw new Error('Character ' + modifier + ' already set');
-          }
-
-          builder.modifiers[modifier] = new CharacterModifier(modifier, val, builder);
-          builder.data[modifier] = val;
+      defineApiVariable(
+        modifier.charAt(0).toUpperCase() + modifier.substring(1),
+        function (val) {
+          return this.setModifier(modifier, val);
         },
-        get: function () {
-          return builder.modifiers[modifier];
-        },
-      });
+        function () {
+          return this.getModifier(modifier);
+        }
+      );
     });
 
     const stats = {};
@@ -144,16 +200,17 @@ CharacterBuilder.prototype = {
         }
       });
     });
-    Object.defineProperty(api, 'stats', {
-      set: function (val) {
+    defineApiVariable(
+      'stats',
+      function (val) {
         Object.keys(val).forEach(function (stat) {
           stats[stat] = val[stat];
         });
       },
-      get: function () {
+      function () {
         return stats;
-      },
-    });
+      }
+    );
 
     const ac = {};
     [ 'armor', 'shield', 'magic' ].forEach(function (acType) {
@@ -163,19 +220,20 @@ CharacterBuilder.prototype = {
         },
         get: function () {
           return builder.data.ac[acType];
-        },
-      })
+        }
+      });
     });
-    Object.defineProperty(api, 'ac', {
-      set: function (val) {
+    defineApiVariable(
+      'ac',
+      function (val) {
         [ 'armor', 'shield', 'magic' ].forEach(function (acType) {
           ac[acType] = val[acType];
         });
       },
-      get: function () {
+      function () {
         return ac;
-      },
-    });
+      }
+    );
 
     return api;
   }
@@ -189,19 +247,22 @@ function CharacterModifier(type, name, builder) {
 
   this.counters = {
     selectedSkills: 0,
-    selectedLanguages: 0,
+    selectedLanguages: 0
   };
 
   if (this.data.proficiencies) {
     const proficiencies = this.data.proficiencies;
 
-    if (proficiencies.skills) {
-      proficiencies.skills.forEach(this.selectSkill.bind(this));
+    function makeProficient(proficiencyType) {
+      return builder.makeProficient.bind(builder, proficiencyType);
     }
 
-    if (proficiencies.languages) {
-      proficiencies.languages.forEach(this.selectLanguage.bind(this));
-    }
+    [ 'skills', 'languages', 'armors', 'weapons', 'tools', 'music' ]
+    .forEach(function (proficiencyType) {
+      if (proficiencies[proficiencyType]) {
+        proficiencies[proficiencyType].forEach(makeProficient(proficiencyType));
+      }
+    });
   }
 
   this.__init = true;
@@ -228,18 +289,14 @@ function CharacterModifier(type, name, builder) {
           + ', valid types are: ' + options.join(', '));
       }
 
-      if (this.builder.data.proficiencies[proficiencyType][value]) {
-        throw new Error('Character is already proficient in ' + value);
-      }
-
-      this.builder.data.proficiencies[proficiencyType][value] = true;
+      this.builder.makeProficient(proficiencyType, value);
 
       if (this.__init) {
         this.counters[counter]++;
       }
 
       return this;
-    }
+    };
   }
 
   createSelectProficiencyFunction('selectSkill', 'skill', 'skills', 'selectedSkills');
