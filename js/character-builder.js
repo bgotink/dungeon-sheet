@@ -41,7 +41,9 @@ const EMPTY_DATA = {
     },
 
     other: []
-  }
+  },
+
+  weapons: []
 };
 
 function CharacterBuilder() {
@@ -153,6 +155,12 @@ CharacterBuilder.prototype = {
     this.data.proficiencies[proficiencyType][value] = true;
   },
 
+  addWeapon(name, properties) {
+    this.data.weapons.push(Object.assign({}, properties, {
+      name
+    }));
+  },
+
   getPublicApi() {
     const builder = this;
     const api = {};
@@ -162,6 +170,10 @@ CharacterBuilder.prototype = {
         set: builder.bindFunction(set),
         get: builder.bindFunction(get)
       });
+    }
+
+    function exposeApiFunction(name) {
+      api[name] = builder.bindFunction(name);
     }
 
     [ 'name', 'alignment', 'playerName', 'inspiration', 'hp', 'speed' ].forEach(function (key) {
@@ -236,6 +248,8 @@ CharacterBuilder.prototype = {
         return ac;
       }
     );
+
+    exposeApiFunction('addWeapon');
 
     return api;
   }

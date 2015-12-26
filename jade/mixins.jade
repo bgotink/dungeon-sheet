@@ -5,6 +5,12 @@ mixin dndBlock(title)
       .card-text
         block
 
+mixin blockCard(title)
+  .card.card-block
+    h4.card-title= title
+    .card-text
+      block
+
 mixin checkmark(checked)
   svg.inline-image.checkmark(
     version="1.1"

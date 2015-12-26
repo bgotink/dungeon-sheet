@@ -1,0 +1,16 @@
+include ../mixins
+
+if character.hasWeapons()
+  +dndBlock('Weapons')
+    each weapon in character.getWeapons()
+      +blockCard(weapon.name)
+        .weapon__line
+          | Attack #{weapon.attackModifier}
+          if weapon.range
+            |  range #{weapon.range}
+        .weapon__line
+          | Damage #{weapon.die}
+          if weapon.damageModifier != '0'
+            | #{weapon.damageModifier}
+          if weapon.damageType
+            |  #{weapon.damageType}

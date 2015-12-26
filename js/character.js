@@ -295,4 +295,24 @@ Character.prototype = {
       + (this.isSkillProficient(Character.skills.perception) ? this.getProfiencyBonusRaw() : 0)
       + this.getStatModifierRaw(Character.stats.WIS);
   },
+
+  hasWeapons() {
+    return !!this.data.weapons.length;
+  },
+
+  getWeapons() {
+    const character = this;
+
+    return this.data.weapons.map(function (weapon) {
+      const statModifier = character.getStatModifierRaw(weapon.stat);
+
+      return Object.assign({}, weapon, {
+        attackModifier: modifierToString(
+          statModifier
+          + (weapon.proficient ? character.getProfiencyBonusRaw() : 0)
+        ),
+        damageModifier: modifierToString(statModifier),
+      });
+    });
+  },
 };
