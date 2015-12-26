@@ -12,6 +12,7 @@
     "bootstrap": "^4.0.0-alpha.2",
     "gulp": "^3.9.0",
     "gulp-jade": "^1.1.0",
-    "gulp-sass": "^2.1.1"
+    "gulp-sass": "^2.1.1",
+    "minimist": "^1.2.0"
   }
 }

@@ -91,6 +91,76 @@ var skillToStatMap = {
 
 Character.baseAC = 10;
 
+Character.experienceToLevel = function (experience) {
+  if (experience < 300) {
+    return 1;
+  } else if (experience < 900) {
+    return 2;
+  } else if (experience < 2700) {
+    return 3;
+  } else if (experience < 6500) {
+    return 4;
+  } else if (experience < 14e3) {
+    return 5;
+  } else if (experience < 23e3) {
+    return 6;
+  } else if (experience < 34e3) {
+    return 7;
+  } else if (experience < 48e3) {
+    return 8;
+  } else if (experience < 64e3) {
+    return 9;
+  } else if (experience < 85e3) {
+    return 10;
+  } else if (experience < 100e3) {
+    return 11;
+  } else if (experience < 120e3) {
+    return 12;
+  } else if (experience < 140e3) {
+    return 13;
+  } else if (experience < 165e3) {
+    return 14;
+  } else if (experience < 195e3) {
+    return 15;
+  } else if (experience < 225e3) {
+    return 16;
+  } else if (experience < 265e3) {
+    return 17;
+  } else if (experience < 305e3) {
+    return 18;
+  } else if (experience < 355e3) {
+    return 19;
+  } else {
+    return 20;
+  }
+}
+
+Character.levelToExperience = function (level) {
+  switch (level) {
+    case  1: return     0;
+    case  2: return   300;
+    case  3: return   900;
+    case  4: return  2700;
+    case  5: return  6500;
+    case  6: return  14e3;
+    case  7: return  23e3;
+    case  8: return  34e3;
+    case  9: return  48e3;
+    case 10: return  64e3;
+    case 11: return  85e3;
+    case 12: return 100e3;
+    case 13: return 120e3;
+    case 14: return 140e3;
+    case 15: return 165e3;
+    case 16: return 195e3;
+    case 17: return 225e3;
+    case 18: return 265e3;
+    case 19: return 305e3;
+    case 20: return 355e3;
+    default: throw new Error('Invalid level: ' + level);
+  }
+}
+
 function modifierToString(modifier, forcePlusIfZero) {
   if (modifier > 0) {
     return `+${modifier}`;

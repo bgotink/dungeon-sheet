@@ -11,9 +11,9 @@ mixin savingThrowCell(stat)
     p Hit Die Used (#{character.getHitDie()}): #[+loop(character.getLevel()): +checkmark(false)]
     p
      | Current HP: 
-     +fill-in(15)
+     +fill-in(10)
      |  Temporary HP: 
-     +fill-in(15)
+     +fill-in(10)
     p
       | Death Saves: 
       | Success 
@@ -26,7 +26,7 @@ mixin savingThrowCell(stat)
       +checkmark()
   div
     h4 Saving Throws
-    table.table.table-sm.table-center
+    table.table.table-sm.table--center
       thead
         tr
           th STR
@@ -45,7 +45,7 @@ mixin savingThrowCell(stat)
           +savingThrowCell('CHA')
   div
     h4 Armor Class
-    table.table.table-sm.table-center
+    table.table.table-sm.table--center
       thead
         tr
           th Armor

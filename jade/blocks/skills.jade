@@ -1,0 +1,31 @@
+include ../mixins
+
+mixin skillRow(skill, name)
+  - prof = character.isSkillProficient(skill)
+  tr(class=(prof ? 'skill--proficient' : ''))
+    td: +checkmark(prof)
+    td= name
+    td= character.getSkill(skill)
+
+
++dndBlock('Skills')
+  table.table.table-sm.table--center.table--no-border-top
+    tbody
+      +skillRow('acrobatics', 'Acrobatics')
+      +skillRow('animal handling', 'Animal Handling')
+      +skillRow('arcana', 'Arcana')
+      +skillRow('athletics', 'Athletics')
+      +skillRow('deception', 'Deception')
+      +skillRow('history', 'History')
+      +skillRow('insight', 'Insight')
+      +skillRow('intimidation', 'Intimidation')
+      +skillRow('investigation', 'Investigation')
+      +skillRow('medicine', 'Medicine')
+      +skillRow('nature', 'Nature')
+      +skillRow('perception', 'Perception')
+      +skillRow('performance', 'Performance')
+      +skillRow('persuasion', 'Persuasion')
+      +skillRow('religion', 'Religion')
+      +skillRow('sleight of hand', 'Sleight of Hand')
+      +skillRow('stealth', 'Stealth')
+      +skillRow('survival', 'Survival')

@@ -4,17 +4,64 @@ html(lang='en')
     title #{character.getName()} &mdash; L#{character.getLevel()} #{character.getRace()} #{character.getClass()}
     link(rel='stylesheet', href='./character.css')
   body
-    .container
-      .row
-        .col-sm-6
+    .character__container
+      .character__block
+        h1= character.getName()
+        p.
+          #{character.getRace()} | #{character.getClass()} | #{character.getAlignment()}
         
-          h1= character.getName()
-          p.
-            #{character.getRace()} | #{character.getClass()} | #{character.getAlignment()}
-        
-          include jade/blocks/general
-          include jade/blocks/health
-
-        .col-sm-6
+      include jade/blocks/general
+      include jade/blocks/health
+      include jade/blocks/skills
           
-          +dndBlock('asdf')
+      +dndBlock('asdf')
+
+    script(type='text/javascript').
+      (function () {
+        'use strict';
+        
+        var container = document.querySelector('.character__container');
+        var blockHeights = Array.prototype.map.call(document.querySelectorAll('.character__block'), function (el) {
+          return el.offsetHeight;
+        });
+        var nbBlocks = blockHeights.length;
+        
+        var lengths = [];
+        var tmpForward = 0, tmpBackward = 0;
+        var equilibrium;
+        
+        function calcHeight(start, end) {
+          if (typeof end === 'undefined') {
+            return blockHeights.slice(start).reduce(function (el, res) { return res + el; }, start * 10);
+          } else {
+            return blockHeights.slice(start, end).reduce(function (el, res) { return res + el; }, (end - start) * 10);
+          }
+        }
+        
+        for (var i = 0; i < nbBlocks; i++) {
+          lengths.push({
+            forward: calcHeight(0, i),
+            backward: calcHeight(i),
+          });
+        }
+        
+        // first, try to find a perfect match
+        equilibrium = lengths.find(function (el) {
+          return el.forward === el.backward;
+        });
+        
+        if (equilibrium) {
+          container.style.maxHeight = equilibrium.forward + 'px';
+          
+          return;
+        }
+        
+        lengths.reverse();
+        lengths.forEach(function (el) {
+          if (el.forward > el.backward) {
+            equilibrium = el;
+          }
+        });
+        
+        container.style.maxHeight = equilibrium.forward + 'px';
+      })();

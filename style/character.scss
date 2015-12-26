@@ -1,12 +1,35 @@
 @import "bootstrap-flex";
 
+$character-block-size: 360px;
+
+.character__container {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  min-width: (2*$character-block-size);
+}
+
+.character__block {
+  width: $character-block-size;
+  margin: 5px 10px;
+}
+
+.skill--proficient,
 .text-highlight {
   font-weight: bold;
 }
 
-.table-center {
+.table--center {
   th, td {
     text-align: center;
+  }
+}
+
+.table--no-border-top {
+  tr:first-of-type > td {
+    border-top: none;
   }
 }
 

@@ -1,10 +1,9 @@
 mixin dndBlock(title)
-  .row
-    .col-sm-12
-      .card.card-block
-        h3.card-title= title
-        .card-text
-          block
+  .character__block
+    .card.card-block
+      h3.card-title= title
+      .card-text
+        block
 
 mixin checkmark(checked)
   svg.inline-image.checkmark(

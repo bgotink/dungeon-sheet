@@ -1,8 +1,12 @@
+'use strict';
+
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const jade = require('gulp-jade');
 
 const path = require('path');
+
+const argv = require('minimist')(process.argv.slice(2));
 
 const SASS_DIR = path.resolve(
   path.dirname(require.resolve('bootstrap/package.json')),
@@ -20,14 +24,21 @@ gulp.task('sass', function () {
 });
 
 gulp.task('jade', function () {
-  return gulp.src('main.jade')
-    .pipe(jade({
-      pretty: true,
-      locals: {
-        character: require('./character'),
-      },
-    }))
-    .pipe(gulp.dest('build/'));
+  return require('./js')(argv.character)
+  .then(function (character) {
+    return new Promise(function(resolve, reject) {
+      gulp.src('main.jade')
+        .pipe(jade({
+          pretty: true,
+          locals: {
+            character,
+          },
+        }))
+        .pipe(gulp.dest('build/'))
+        .on('end', resolve)
+        .on('error', reject);
+    });
+  });
 });
 
 gulp.task('default', [
