@@ -292,17 +292,16 @@ function CharacterModifier(type, name, builder) {
 
       if (this.__init) {
         if (!maxNbProficiencies) {
-          throw new Error('Character ' + this.type + ' ' + this.name + ' doesn\'t yield ' + proficiencyTypeName + ' proficiencies');
+          throw new Error(`Character ${this.type} ${this.name} doesn't yield ${proficiencyTypeName} proficiencies`);
         }
 
         if (this.counters[counter] >= maxNbProficiencies) {
-          throw new Error('Maximum number of ' + this.type + ' ' + proficiencyTypeName + ' proficiencies reached');
+          throw new Error(`Maximum number of ${this.type} ${proficiencyTypeName} proficiencies reached`);
         }
       }
 
       if (options !== undefined && !options.contains(value)) {
-        throw new Error('Invalid ' + proficiencyTypeName + ' proficiency for ' + this.type + ' ' + this.name
-          + ', valid types are: ' + options.join(', '));
+        throw new Error(`Invalid ${proficiencyTypeName} proficiency for ${this.type} ${this.name}, valid types are: ${options.join(', ')}`);
       }
 
       this.builder.makeProficient(proficiencyType, value);
