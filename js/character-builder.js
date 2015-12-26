@@ -36,7 +36,9 @@ const EMPTY_DATA = {
   proficiencies: {
     skills: {},
 
-    languages: [ 'Common' ],
+    languages: {
+      'Common': true
+    },
 
     other: []
   }
