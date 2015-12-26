@@ -257,7 +257,7 @@ function CharacterModifier(type, name, builder) {
       return builder.makeProficient.bind(builder, proficiencyType);
     }
 
-    [ 'skills', 'languages', 'armors', 'weapons', 'tools', 'music' ]
+    [ 'skills', 'languages', 'armors', 'weapons', 'tools', 'others' ]
     .forEach(function (proficiencyType) {
       if (proficiencies[proficiencyType]) {
         proficiencies[proficiencyType].forEach(makeProficient(proficiencyType));

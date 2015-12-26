@@ -282,36 +282,11 @@ Character.prototype = {
     }
   },
 
-  getLanguages() {
-    return mergeArrays(
-      [ 'Common' ],
-      this.raceData.proficiencies.languages,
-      this.classData.proficiencies.languages,
-      this.data.proficiencies.languages
-    );
+  getProficiencies(type) {
+    return Object.keys(this.data.proficiencies[type] || {});
   },
-
-  getWeaponProficiencies() {
-    return mergeArrays(
-      this.raceData.proficiencies.weapons,
-      this.classData.proficiencies.weapons,
-      this.data.proficiencies.weapons
-    );
-  },
-
-  getArmorProficiencies() {
-    return mergeArrays(
-      this.raceData.proficiencies.armors,
-      this.classData.proficiencies.armos,
-      this.data.proficiencies.armors
-    );
-  },
-
-  getOtherProficiencies() {
-    return mergeArrays(
-      this.raceData.proficiencies.armors,
-      this.classData.proficiencies.armors,
-      this.data.proficiencies.armors
-    );
-  },
+  hasProficiencies(type) {
+    return this.data.proficiencies.hasOwnProperty(type)
+      && Object.keys(this.data.proficiencies[type]).length > 0;
+  }
 }

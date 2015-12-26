@@ -1,0 +1,17 @@
+include ../mixins
+
+mixin proficienciesRow(type, name, nameSingular)
+  if character.hasProficiencies(type)
+    - prof = character.getProficiencies(type)
+    .proficiencies__row
+      span.text-highlight= prof.length > 1 ? name : nameSingular
+      | : 
+      span= prof.join(', ')
+
++dndBlock('Proficiencies')
+  .proficiencies__container
+    +proficienciesRow('languages', 'Languages', 'Language')
+    +proficienciesRow('weapons', 'Weapons', 'Weapon')
+    +proficienciesRow('armors', 'Armors', 'Armor')
+    +proficienciesRow('tools', 'Toolkits', 'Toolkit')
+    +proficienciesRow('others', 'Other', 'Other')
