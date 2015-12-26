@@ -57,6 +57,14 @@ html(lang='en')
           return;
         }
         
+        lengths.forEach(function (el) {
+          if (el.backward > el.forward) {
+            equilibrium = el;
+          }
+        });
+
+        var backward = equilibrium.backward;
+
         lengths.reverse();
         lengths.forEach(function (el) {
           if (el.forward > el.backward) {
@@ -64,5 +72,7 @@ html(lang='en')
           }
         });
         
-        container.style.maxHeight = equilibrium.forward + 'px';
+        var forward = equilibrium.forward;
+
+        container.style.maxHeight = Math.min(backward, forward) + 'px';
       })();
