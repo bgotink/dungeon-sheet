@@ -288,5 +288,11 @@ Character.prototype = {
   hasProficiencies(type) {
     return this.data.proficiencies.hasOwnProperty(type)
       && Object.keys(this.data.proficiencies[type]).length > 0;
-  }
-}
+  },
+
+  getPassivePerception() {
+    return 10
+      + (this.isSkillProficient(Character.skills.perception) ? this.getProfiencyBonusRaw() : 0)
+      + this.getStatModifierRaw(Character.stats.WIS);
+  },
+};

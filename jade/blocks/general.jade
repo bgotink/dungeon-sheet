@@ -41,15 +41,15 @@ include ../mixins
           th Init
           th SPD
           th Inspiration
-          th &nbsp;
-          th Level
+          th PP
       tbody
-        tr.text-highlight
+        tr
           td= character.getHitPoints()
-          td= character.getProfiencyBonus()
+          td.text-highlight= character.getProfiencyBonus()
           td= character.getInitiative()
           td= character.getSpeed()
           td
             +checkmark(character.hasInspiration())
-          td &nbsp;
-          td= character.getLevel()
+          td(
+            class=(character.isSkillProficient('perception') ? 'text-highlight' : '')
+          )= character.getPassivePerception()

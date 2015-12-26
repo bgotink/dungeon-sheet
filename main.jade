@@ -8,7 +8,7 @@ html(lang='en')
       .character__block
         h1= character.getName()
         p.
-          #{character.getRace()} | #{character.getClass()} | #{character.getAlignment()}
+          L#{character.getLevel()} | #{character.getRace()} | #{character.getClass()} | #{character.getAlignment()}
         
       include jade/blocks/general
       include jade/blocks/health
