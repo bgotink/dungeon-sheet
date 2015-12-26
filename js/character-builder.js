@@ -43,7 +43,18 @@ const EMPTY_DATA = {
     other: []
   },
 
-  weapons: []
+  weapons: [],
+
+  treasure: {
+    pp: 0,
+    gp: 0,
+    ep: 0,
+    sp: 0,
+    cp: 0,
+    items: []
+  },
+
+  equipment: []
 };
 
 function CharacterBuilder() {
@@ -161,6 +172,30 @@ CharacterBuilder.prototype = {
     }));
   },
 
+  setCoin(coin, val) {
+    this.data.treasure[coin] = val;
+  },
+
+  getCoin(coin) {
+    return this.data.treasure[coin];
+  },
+
+  setTreasureItems(items) {
+    this.data.treasure.items = items || [];
+  },
+
+  getTreasureItems() {
+    return this.data.treasure.items;
+  },
+
+  setEquipment(equipment) {
+    this.data.equipment = equipment || [];
+  },
+
+  getEquipment() {
+    return this.data.equipment;
+  },
+
   getPublicApi() {
     const builder = this;
     const api = {};
@@ -250,6 +285,45 @@ CharacterBuilder.prototype = {
     );
 
     exposeApiFunction('addWeapon');
+
+    const treasure = {};
+    Character.coins.forEach(function (coin) {
+      Object.defineProperty(treasure, coin, {
+        set: function (val) {
+          builder.setCoin(coin, val);
+        },
+        get: function () {
+          return builder.getCoin(coin);
+        }
+      });
+    });
+    Object.defineProperty(treasure, 'items', {
+      set: function (items) {
+        builder.setTreasureItems(items);
+      },
+      get: function () {
+        return builder.getTreasureItems();
+      }
+    });
+    defineApiVariable(
+      'treasure',
+      function (val) {
+        Character.coins.forEach(function (coin) {
+          if (val[coin] != undefined) {
+            treasure[coin] = val[coin];
+          }
+        });
+
+        if (val.items) {
+          treasure.items = val.items;
+        }
+      },
+      function () {
+        return treasure;
+      }
+    );
+
+    defineApiVariable('equipment', 'setEquipment', 'getEquipment');
 
     return api;
   }

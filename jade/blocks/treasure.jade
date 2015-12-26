@@ -1,0 +1,19 @@
+include ../mixins
+
+if character.hasTreasure()
+  +dndBlock('Treasure')
+    - treasure = character.getTreasure()
+    .row
+      .col-xs-4
+        table.table.table-sm.table--right.table--no-border-top
+          tbody
+            each coin in [ 'pp', 'gp', 'ep', 'sp', 'cp' ]
+              tr
+                td= coin.toUpperCase()
+                td= treasure[coin] || '0'
+      .col-xs-8
+        table.table.table-sm.table--no-border-top
+          tbody
+            each item in (treasure.items || [])
+              tr
+                td= item

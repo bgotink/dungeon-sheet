@@ -1,0 +1,23 @@
+include ../mixins
+
+if character.hasEquipment()
+  +dndBlock('Equipment')
+    - equipment = character.getEquipment()
+    - nbIterations = Math.ceil(equipment.length / 2)
+    .row
+      .col-xs-6
+        table.table.table-sm.table--no-border-top
+          tbody
+            - i = 0
+            while i < nbIterations
+              tr
+                td= equipment[2 * i]
+              - i++
+      .col-xs-6
+        table.table.table-sm.table--no-border-top
+          tbody
+            - i = 0
+            while i < nbIterations
+              tr
+                td= equipment[2 * i + 1] || ''
+              - i++

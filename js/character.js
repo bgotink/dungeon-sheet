@@ -161,6 +161,10 @@ Character.levelToExperience = function (level) {
   }
 }
 
+Character.coins = [
+  'pp', 'gp', 'ep', 'sp', 'cp'
+];
+
 function modifierToString(modifier, forcePlusIfZero) {
   if (modifier > 0) {
     return `+${modifier}`;
@@ -299,7 +303,6 @@ Character.prototype = {
   hasWeapons() {
     return !!this.data.weapons.length;
   },
-
   getWeapons() {
     const character = this;
 
@@ -314,5 +317,22 @@ Character.prototype = {
         damageModifier: modifierToString(statModifier),
       });
     });
+  },
+
+  hasTreasure() {
+    const treasure = this.getTreasure();
+
+    return treasure && (treasure.pp || treasure.gp || treasure.ep || treasure.sp
+      || treasure.cp || (treasure.items && treasure.items.length));
+  },
+  getTreasure() {
+    return this.data.treasure;
+  },
+
+  hasEquipment() {
+    return this.data.equipment && this.data.equipment.length;
+  },
+  getEquipment() {
+    return this.data.equipment;
   },
 };
