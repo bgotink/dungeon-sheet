@@ -27,6 +27,10 @@ $character-block-size: 300px;
   }
 }
 
+.text--right {
+  text-align: right;
+}
+
 .table--no-border-top {
   tr:first-of-type > td {
     border-top: none;
