@@ -62,8 +62,12 @@
 
 \def\dnddrawsize{5mm}
 
-\def\dndhoroffset{3mm}
-\def\dndveroffset{15mm}
+\def\dndhoroffset{5mm}
+\def\dndveroffset{25mm}
+
+\def\dndfatline{2.5pt}
+\def\dndmedline{1.0pt}
+\def\dndthinline{0.5pt}
 
 \coordinate (O) at ($(t.north west) + (-2*\dnddrawsize, 2*\dnddrawsize)$);
 \coordinate (A) at ($(t.north east) + ( 2*\dnddrawsize, 2*\dnddrawsize)$);
@@ -80,94 +84,94 @@
 %	($(B) + (.5pt,-.5pt)$);
 
 % lines
-\draw[line width=1.5pt, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (o) -- (a);
-\draw[line width=1.5pt, shorten <= \dndveroffset, shorten >= \dndveroffset] (a) -- (b);
-\draw[line width=1.5pt, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (b) -- (c);
-\draw[line width=1.5pt, shorten <= \dndveroffset, shorten >= \dndveroffset] (c) -- (o);
+\draw[line width=\dndfatline, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (o) -- (a);
+\draw[line width=\dndfatline, shorten <= \dndveroffset, shorten >= \dndveroffset] (a) -- (b);
+\draw[line width=\dndfatline, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (b) -- (c);
+\draw[line width=\dndfatline, shorten <= \dndveroffset, shorten >= \dndveroffset] (c) -- (o);
 
 % top left corner
-\draw[line width=1.5pt]
-	($ (o) + (\dndhoroffset, 0) + (1.5pt, 0) $)
+\draw[line width=\dndfatline]
+	($ (o) + (\dndhoroffset, 0) + (\dndfatline, 0) $)
 	-- ($ (o) + (\dndhoroffset, 0) $)
 	arc (0:-90:\dndhoroffset)
 	-- ($ (o) + (-\dndhoroffset/4,-\dndveroffset/2)$)
 	to[in=85,out=290] ($ (o) + (0,-\dndveroffset) $)
-	-- ($ (o) + (0,-\dndveroffset) + (0, -1.5pt) $)
+	-- ($ (o) + (0,-\dndveroffset) + (0, -\dndfatline) $)
 ;
-\draw[line width=1.0pt]
+\draw[line width=\dndmedline]
 	($ (o) + (0,-\dndveroffset) $)
 	to[in=300,out=90] ($ (o) + (-\dndhoroffset/3,-2*\dndveroffset/3) $)
 	arc (300:370:\dndhoroffset)
 	coordinate (o2)
 	to[in=270,out=135] ($ (o) + (0,-\dndhoroffset) $)
 ;
-\draw[line width=0.5pt]
+\draw[line width=\dndthinline]
 	(o2)
 	to[in=180,out=90]
 	($ (o) + (3*\dndhoroffset,0) $)
 ;
 
 % top right corner
-\draw[line width=1.5pt]
-	($ (a) + (-\dndhoroffset, 0) + (-1.5pt, 0) $)
+\draw[line width=\dndfatline]
+	($ (a) + (-\dndhoroffset, 0) + (-\dndfatline, 0) $)
 	-- ($ (a) + (-\dndhoroffset, 0) $)
 	arc (180:270:\dndhoroffset)
 	-- ($ (a) + (\dndhoroffset/4,-\dndveroffset/2)$)
 	to[in=95,out=250] ($ (a) + (0,-\dndveroffset) $)
-	-- ($ (a) + (0,-\dndveroffset) + (0, -1.5pt) $)
+	-- ($ (a) + (0,-\dndveroffset) + (0, -\dndfatline) $)
 ;
-\draw[line width=1.0pt]
+\draw[line width=\dndmedline]
 	($ (a) + (0,-\dndveroffset) $)
 	to[in=240,out=90] ($ (a) + (\dndhoroffset/3,-2*\dndveroffset/3) $)
 	arc (240:170:\dndhoroffset)
 	coordinate (a2)
 	to[in=270,out=45] ($ (a) + (0,-\dndhoroffset) $)
 ;
-\draw[line width=0.5pt]
+\draw[line width=\dndthinline]
 	(a2)
 	to[in=0,out=90]
 	($ (a) + (-3*\dndhoroffset,0) $)
 ;
 
 % bottom right corner
-\draw[line width=1.5pt]
-	($ (b) + (-\dndhoroffset, 0) + (-1.5pt, 0) $)
+\draw[line width=\dndfatline]
+	($ (b) + (-\dndhoroffset, 0) + (-\dndfatline, 0) $)
 	-- ($ (b) + (-\dndhoroffset, 0) $)
 	arc (180:90:\dndhoroffset)
 	-- ($ (b) + (\dndhoroffset/4,\dndveroffset/2)$)
 	to[in=265,out=110] ($ (b) + (0,\dndveroffset) $)
-	-- ($ (b) + (0,\dndveroffset) + (0, 1.5pt) $)
+	-- ($ (b) + (0,\dndveroffset) + (0, \dndfatline) $)
 ;
-\draw[line width=1.0pt]
+\draw[line width=\dndmedline]
 	($ (b) + (0,\dndveroffset) $)
 	to[in=120,out=270] ($ (b) + (\dndhoroffset/3,2*\dndveroffset/3) $)
 	arc (120:190:\dndhoroffset)
 	coordinate (b2)
 	to[in=90,out=-45] ($ (b) + (0,\dndhoroffset) $)
 ;
-\draw[line width=0.5pt]
+\draw[line width=\dndthinline]
 	(b2)
 	to[in=0,out=-90]
 	($ (b) + (-3*\dndhoroffset,0) $)
 ;
 
 % bottom left corner
-\draw[line width=1.5pt]
-	($ (c) + (\dndhoroffset, 0) + (-1.5pt, 0) $)
+\draw[line width=\dndfatline]
+	($ (c) + (\dndhoroffset, 0) + (\dndfatline, 0) $)
 	-- ($ (c) + (\dndhoroffset, 0) $)
 	arc (0:90:\dndhoroffset)
 	-- ($ (c) + (-\dndhoroffset/4,\dndveroffset/2)$)
 	to[in=275,out=70] ($ (c) + (0,\dndveroffset) $)
-	-- ($ (c) + (0,\dndveroffset) + (0, 1.5pt) $)
+	-- ($ (c) + (0,\dndveroffset) + (0, \dndfatline) $)
 ;
-\draw[line width=1.0pt]
+\draw[line width=\dndmedline]
 	($ (c) + (0,\dndveroffset) $)
 	to[in=60,out=270] ($ (c) + (-\dndhoroffset/3,2*\dndveroffset/3) $)
 	arc (60:-10:\dndhoroffset)
 	coordinate (c2)
 	to[in=90,out=-135] ($ (c) + (0,\dndhoroffset) $)
 ;
-\draw[line width=0.5pt]
+\draw[line width=\dndthinline]
 	(c2)
 	to[in=180,out=-90]
 	($ (c) + (3*\dndhoroffset,0) $)
