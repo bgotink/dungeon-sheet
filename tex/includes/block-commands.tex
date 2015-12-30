@@ -7,8 +7,14 @@
 %
 
 \newcommand{\dnd@Content}[1]{%
-  \node[inner sep=0pt,outer sep=0pt,text width=\columnwidth-2*\dndpaddingsize](t){#1};
+%  \node[inner sep=0pt,outer sep=0pt,text width=\columnwidth-2*\dndpaddingsize,draw=blue!80,thick](t){#1};
   % add ",draw=blue!80, thick" to line above to show the outline of t
+  
+  \path
+    (0,0)
+    -- (\columnwidth-2*\dndpaddingsize,0)
+    node[midway, below, inner sep=0pt, outer sep=0pt, minimum width=\columnwidth-2*\dndpaddingsize, draw=blue!80, thick] (t) {#1}
+  ;
     
   \coordinate (O) at ($ (t.north west) + (-\dndpaddingsize, \dndpaddingsize) $);
   \coordinate (A) at ($ (t.north east) + ( \dndpaddingsize, \dndpaddingsize) $);
@@ -36,6 +42,16 @@
   \draw[line width=\dndfatline, shorten <= \dndveroffset, shorten >= \dndveroffset] (a) -- (b);
   \draw[line width=\dndfatline, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (b) -- (c);
   \draw[line width=\dndfatline, shorten <= \dndveroffset, shorten >= \dndveroffset] (c) -- (o);%
+}
+
+\newcommand{\dnd@LinesVerticalThin}{%
+  \draw[line width=\dndmedline, shorten <= \dndveroffset, shorten >= \dndveroffset]
+    ($ (o) + (\dndverlinesep,0) $)
+    -- ($ (c) + (\dndverlinesep,0) $);
+  \draw[line width=\dndmedline, shorten <= \dndveroffset, shorten >= \dndveroffset]
+    ($ (b) - (\dndverlinesep,0) $)
+    -- ($ (a) - (\dndverlinesep,0) $)
+  ;%
 }
 
 %
@@ -136,7 +152,145 @@
   ;%
 }
 
-% TODO: Type two
+% Type two:
+
+\newcommand{\dnd@CornerTwoTopLeft}{%
+  \draw[line width=\dndfatline]
+    ($ (o) + (\dndhoroffset, 0) + (\dndfatline, 0) $)
+    -- ($ (o) + (\dndhoroffset, 0) $)
+    arc (0:-90:\dndhoroffset)
+    -- ($ (o) + (0,-\dndveroffset) + (0, -\dndfatline) $)
+  ;
+  \begin{scope}
+    \draw[name path=cutoff,line width=\dndmedfatline]
+      ($ (o) + (2.5*\dndhoroffset,0) $)
+      to[in=70,out=190]
+      ($ (o) + (0,-3*\dndhoroffset) $)
+    ;
+    \path[name path=vertical]
+      ($ (o) + (\dndverlinesep,-\dndveroffset) $)
+      -- ($ (o) + (\dndverlinesep,0) $)
+    ;
+    \path[name intersections={of=cutoff and vertical,by={e}}] ;
+    \draw[line width=\dndmedline]
+      ($ (o) + (\dndverlinesep,-\dndveroffset) $)
+      -- ($ (e) $)
+    ;
+  \end{scope}%
+}
+
+\newcommand{\dnd@CornerTwoTopRight}{%
+  \draw[line width=\dndfatline]
+    ($ (a) - (\dndhoroffset, 0) - (\dndfatline, 0) $)
+    -- ($ (a) - (\dndhoroffset, 0) $)
+    arc (180:270:\dndhoroffset)
+    -- ($ (a) + (0,-\dndveroffset) + (0, -\dndfatline) $)
+  ;
+  \begin{scope}
+    \draw[name path=cutoff,line width=\dndmedfatline]
+      ($ (a) - (2.5*\dndhoroffset,0) $)
+      to[in=110,out=-10]
+      ($ (a) + (0,-3*\dndhoroffset) $)
+    ;
+    \path[name path=vertical]
+      ($ (a) + (-\dndverlinesep,-\dndveroffset) $)
+      -- ($ (a) + (-\dndverlinesep,0) $)
+    ;
+    \path[name intersections={of=cutoff and vertical,by={e}}] ;
+    \draw[line width=\dndmedline]
+      ($ (a) + (-\dndverlinesep,-\dndveroffset) $)
+      -- ($ (e) $)
+    ;
+  \end{scope}%
+}
+
+\newcommand{\dnd@CornerTwoABottomRight}{%
+  \draw[line width=\dndfatline]
+    ($ (b) + (-\dndhoroffset, 0) + (-\dndfatline, 0) $)
+    -- ($ (b) + (-\dndhoroffset, 0) $)
+    arc (180:90:\dndhoroffset)
+    -- ($ (b) + (0,\dndveroffset) + (0, \dndfatline) $)
+  ;
+  \draw[line width=\dndmedline]
+    ($ (b) + (-\dndverlinesep,\dndveroffset) $)
+    to[in=110,out=-90]
+    ($ (b) + (0,2*\dndhoroffset) $)
+  ;
+  \draw[line width=\dndmedfatline]
+    ($ (b) + (0,\dndveroffset) $)
+    to[in=90,out=290]
+    ($ (b) + (\dndhoroffset/2,1.5*\dndhoroffset) $)
+    to[in=90,out=180]
+    ($ (b) + (-1.5*\dndhoroffset,0) $)
+  ;%
+}
+
+\newcommand{\dnd@CornerTwoABottomLeft}{%
+  \draw[line width=\dndfatline]
+    ($ (c) + (\dndhoroffset, 0) + (\dndfatline, 0) $)
+    -- ($ (c) + (\dndhoroffset, 0) $)
+    arc (0:90:\dndhoroffset)
+    -- ($ (c) + (0,\dndveroffset) + (0, \dndfatline) $)
+  ;
+  \draw[line width=\dndmedline]
+    ($ (c) + (\dndverlinesep,\dndveroffset) $)
+    to[in=70,out=90]
+    ($ (c) + (0,2*\dndhoroffset) $)
+  ;
+  \draw[line width=\dndmedfatline]
+    ($ (c) + (0,\dndveroffset) $)
+    to[in=90,out=250]
+    ($ (c) + (-\dndhoroffset/2,1.5*\dndhoroffset) $)
+    to[in=90,out=0]
+    ($ (c) + (1.5*\dndhoroffset,0) $)
+  ;%
+}
+
+\newcommand{\dnd@CornerTwoBBottomRight}{%
+  \draw[line width=\dndfatline]
+    ($ (b) + (-\dndhoroffset, 0) + (-\dndfatline, 0) $)
+    -- ($ (b) + (-\dndhoroffset, 0) $)
+    arc (180:90:\dndhoroffset)
+    -- ($ (b) + (0,\dndveroffset) + (0, \dndfatline) $)
+  ;
+  \draw[line width=\dndmedline]
+    ($ (b) + (-\dndverlinesep,\dndveroffset) $)
+    to[in=110,out=-90]
+    ($ (b) + (0,2*\dndhoroffset) $)
+  ;
+  \draw[line width=\dndmedfatline]
+    ($ (b) + (0,\dndveroffset) $)
+    to[in=180,out=-90]
+    ($ (b) + (\dndhoroffset/2,\dndveroffset-.75*\dndhoroffset) $)
+    to[in=30,out=-90]
+    ($ (b) + (-2.2*\dndhoroffset,0) $)
+  ;%
+}
+
+\newcommand{\dnd@CornerTwoBBottomLeft}{%
+  \draw[line width=\dndfatline]
+    ($ (c) + (\dndhoroffset, 0) + (\dndfatline, 0) $)
+    -- ($ (c) + (\dndhoroffset, 0) $)
+    arc (0:90:\dndhoroffset)
+    -- ($ (c) + (0,\dndveroffset) + (0, \dndfatline) $)
+  ;
+  \draw[line width=\dndmedline]
+    ($ (c) + (\dndverlinesep,\dndveroffset) $)
+    to[in=70,out=90]
+    ($ (c) + (0,2*\dndhoroffset) $)
+  ;
+  \draw[line width=\dndmedfatline]
+    ($ (c) + (0,\dndveroffset) $)
+    to[in=0,out=-90]
+    ($ (c) + (-\dndhoroffset/2,\dndveroffset-.75*\dndhoroffset) $)
+    to[in=150,out=-90]
+    ($ (c) + (2.2*\dndhoroffset,0) $)
+  ;%
+}
+
+%
+% Public block macros:
+%
 
 \newcommand{\dndblock}[2]{%
 \begin{minipage}{\columnwidth}
@@ -169,4 +323,71 @@
 \end{tikzpicture}
 \end{minipage}
 }
+
+\newcommand{\dndblockTwoA}[2]{%
+\begin{minipage}{\columnwidth}
+\begin{tikzpicture}
+\begin{scope}
+  %\node[inner sep=0pt,outer sep=0pt,text width=.5\textwidth](t){#2};
+  \dnd@Content{#2}
+  
+  % lines
+  \dnd@Lines{}
+  \dnd@LinesVerticalThin{}
+  
+  % top left corner
+  \dnd@CornerTwoTopLeft{}
+  
+  % top right corner
+  \dnd@CornerTwoTopRight{}
+  
+  % bottom right corner
+  \dnd@CornerTwoABottomRight{}
+  
+  % bottom left corner
+  \dnd@CornerTwoABottomLeft{}
+  
+  \path
+    (c)
+    -- (b)
+    node[midway, above] { {\large\bfseries\sc #1} }
+  ;
+\end{scope}
+\end{tikzpicture}
+\end{minipage}
+}
+
+\newcommand{\dndblockTwoB}[2]{%
+\begin{minipage}{\columnwidth}
+\begin{tikzpicture}
+\begin{scope}
+  %\node[inner sep=0pt,outer sep=0pt,text width=.5\textwidth](t){#2};
+  \dnd@Content{#2}
+  
+  % lines
+  \dnd@Lines{}
+  \dnd@LinesVerticalThin{}
+  
+  % top left corner
+  \dnd@CornerTwoTopLeft{}
+  
+  % top right corner
+  \dnd@CornerTwoTopRight{}
+  
+  % bottom right corner
+  \dnd@CornerTwoBBottomRight{}
+  
+  % bottom left corner
+  \dnd@CornerTwoBBottomLeft{}
+  
+  \path
+    (c)
+    -- (b)
+    node[midway, above] { {\large\bfseries\sc #1} }
+  ;
+\end{scope}
+\end{tikzpicture}
+\end{minipage}
+}
+
 \makeatother
