@@ -3,14 +3,39 @@
 \makeatletter
 
 %
+% Draws the content in a box
+%
+
+\newcommand{\dnd@Content}[1]{%
+  \node[inner sep=0pt,outer sep=0pt,text width=\columnwidth-2*\dndpaddingsize](t){#1};
+  % add ",draw=blue!80, thick" to line above to show the outline of t
+    
+  \coordinate (O) at ($ (t.north west) + (-\dndpaddingsize, \dndpaddingsize) $);
+  \coordinate (A) at ($ (t.north east) + ( \dndpaddingsize, \dndpaddingsize) $);
+  \coordinate (B) at ($ (t.south east) + ( \dndpaddingsize,-\dndpaddingsize) + (0,-\dndbottompadding) $);
+  \coordinate (C) at ($ (t.south west) + (-\dndpaddingsize,-\dndpaddingsize) + (0,-\dndbottompadding) $);
+  
+  \coordinate (o) at ($ (t.north west) + (-\dnddrawsize, \dnddrawsize) $);
+  \coordinate (a) at ($ (t.north east) + ( \dnddrawsize, \dnddrawsize) $);
+  \coordinate (b) at ($ (t.south east) + ( \dnddrawsize,-\dnddrawsize) + (0,-\dndbottompadding) $);
+  \coordinate (c) at ($ (t.south west) + (-\dnddrawsize,-\dnddrawsize) + (0,-\dndbottompadding) $);
+  
+  \path[clip]
+    (O)
+    rectangle
+    (B)
+  ;%
+}
+
+%
 % Draws the straight lines for the box
 %
 
 \newcommand{\dnd@Lines}{%
-\draw[line width=\dndfatline, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (o) -- (a);
-\draw[line width=\dndfatline, shorten <= \dndveroffset, shorten >= \dndveroffset] (a) -- (b);
-\draw[line width=\dndfatline, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (b) -- (c);
-\draw[line width=\dndfatline, shorten <= \dndveroffset, shorten >= \dndveroffset] (c) -- (o);%
+  \draw[line width=\dndfatline, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (o) -- (a);
+  \draw[line width=\dndfatline, shorten <= \dndveroffset, shorten >= \dndveroffset] (a) -- (b);
+  \draw[line width=\dndfatline, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (b) -- (c);
+  \draw[line width=\dndfatline, shorten <= \dndveroffset, shorten >= \dndveroffset] (c) -- (o);%
 }
 
 %
@@ -20,145 +45,128 @@
 % Type One:
 
 \newcommand{\dnd@CornerOneTopLeft}{%
-\draw[line width=\dndfatline]
-	($ (o) + (\dndhoroffset, 0) + (\dndfatline, 0) $)
-	-- ($ (o) + (\dndhoroffset, 0) $)
-	arc (0:-90:\dndhoroffset)
-	-- ($ (o) + (-\dndhoroffset/4,-\dndveroffset/2)$)
-	to[in=85,out=290] ($ (o) + (0,-\dndveroffset) $)
-	-- ($ (o) + (0,-\dndveroffset) + (0, -\dndfatline) $)
-;
-\draw[line width=\dndmedline]
-	($ (o) + (0,-\dndveroffset) $)
-	to[in=300,out=90] ($ (o) + (-\dndhoroffset/3,-2*\dndveroffset/3) $)
-	arc (300:370:\dndhoroffset)
-	coordinate (o2)
-	to[in=270,out=135] ($ (o) + (0,-\dndhoroffset) $)
-;
-\draw[line width=\dndthinline]
-	(o2)
-	to[in=180,out=90]
-	($ (o) + (3*\dndhoroffset,0) $)
-;%
+  \draw[line width=\dndfatline]
+    ($ (o) + (\dndhoroffset, 0) + (\dndfatline, 0) $)
+    -- ($ (o) + (\dndhoroffset, 0) $)
+    arc (0:-90:\dndhoroffset)
+    -- ($ (o) + (-\dndhoroffset/4,-\dndveroffset/2)$)
+    to[in=85,out=290] ($ (o) + (0,-\dndveroffset) $)
+    -- ($ (o) + (0,-\dndveroffset) + (0, -\dndfatline) $)
+  ;
+  \draw[line width=\dndmedline]
+    ($ (o) + (0,-\dndveroffset) $)
+    to[in=300,out=90] ($ (o) + (-\dndhoroffset/3,-2*\dndveroffset/3) $)
+    arc (300:370:\dndhoroffset)
+    coordinate (o2)
+    to[in=270,out=135] ($ (o) + (0,-\dndhoroffset) $)
+  ;
+  \draw[line width=\dndthinline]
+    (o2)
+    to[in=180,out=90]
+    ($ (o) + (3*\dndhoroffset,0) $)
+  ;%
 }
 
 \newcommand{\dnd@CornerOneTopRight}{%
-\draw[line width=\dndfatline]
-	($ (a) + (-\dndhoroffset, 0) + (-\dndfatline, 0) $)
-	-- ($ (a) + (-\dndhoroffset, 0) $)
-	arc (180:270:\dndhoroffset)
-	-- ($ (a) + (\dndhoroffset/4,-\dndveroffset/2)$)
-	to[in=95,out=250] ($ (a) + (0,-\dndveroffset) $)
-	-- ($ (a) + (0,-\dndveroffset) + (0, -\dndfatline) $)
-;
-\draw[line width=\dndmedline]
-	($ (a) + (0,-\dndveroffset) $)
-	to[in=240,out=90] ($ (a) + (\dndhoroffset/3,-2*\dndveroffset/3) $)
-	arc (240:170:\dndhoroffset)
-	coordinate (a2)
-	to[in=270,out=45] ($ (a) + (0,-\dndhoroffset) $)
-;
-\draw[line width=\dndthinline]
-	(a2)
-	to[in=0,out=90]
-	($ (a) + (-3*\dndhoroffset,0) $)
-;%
+  \draw[line width=\dndfatline]
+    ($ (a) + (-\dndhoroffset, 0) + (-\dndfatline, 0) $)
+    -- ($ (a) + (-\dndhoroffset, 0) $)
+    arc (180:270:\dndhoroffset)
+    -- ($ (a) + (\dndhoroffset/4,-\dndveroffset/2)$)
+    to[in=95,out=250] ($ (a) + (0,-\dndveroffset) $)
+    -- ($ (a) + (0,-\dndveroffset) + (0, -\dndfatline) $)
+  ;
+  \draw[line width=\dndmedline]
+    ($ (a) + (0,-\dndveroffset) $)
+    to[in=240,out=90] ($ (a) + (\dndhoroffset/3,-2*\dndveroffset/3) $)
+    arc (240:170:\dndhoroffset)
+    coordinate (a2)
+    to[in=270,out=45] ($ (a) + (0,-\dndhoroffset) $)
+  ;
+  \draw[line width=\dndthinline]
+    (a2)
+    to[in=0,out=90]
+    ($ (a) + (-3*\dndhoroffset,0) $)
+  ;%
 }
 
 \newcommand{\dnd@CornerOneBottomRight}{%
-\draw[line width=\dndfatline]
-	($ (b) + (-\dndhoroffset, 0) + (-\dndfatline, 0) $)
-	-- ($ (b) + (-\dndhoroffset, 0) $)
-	arc (180:90:\dndhoroffset)
-	-- ($ (b) + (\dndhoroffset/4,\dndveroffset/2)$)
-	to[in=265,out=110] ($ (b) + (0,\dndveroffset) $)
-	-- ($ (b) + (0,\dndveroffset) + (0, \dndfatline) $)
-;
-\draw[line width=\dndmedline]
-	($ (b) + (0,\dndveroffset) $)
-	to[in=120,out=270] ($ (b) + (\dndhoroffset/3,2*\dndveroffset/3) $)
-	arc (120:190:\dndhoroffset)
-	coordinate (b2)
-	to[in=90,out=-45] ($ (b) + (0,\dndhoroffset) $)
-;
-\draw[line width=\dndthinline]
-	(b2)
-	to[in=0,out=-90]
-	($ (b) + (-3*\dndhoroffset,0) $)
-;%
+  \draw[line width=\dndfatline]
+    ($ (b) + (-\dndhoroffset, 0) + (-\dndfatline, 0) $)
+    -- ($ (b) + (-\dndhoroffset, 0) $)
+    arc (180:90:\dndhoroffset)
+    -- ($ (b) + (\dndhoroffset/4,\dndveroffset/2)$)
+    to[in=265,out=110] ($ (b) + (0,\dndveroffset) $)
+    -- ($ (b) + (0,\dndveroffset) + (0, \dndfatline) $)
+  ;
+  \draw[line width=\dndmedline]
+    ($ (b) + (0,\dndveroffset) $)
+    to[in=120,out=270] ($ (b) + (\dndhoroffset/3,2*\dndveroffset/3) $)
+    arc (120:190:\dndhoroffset)
+    coordinate (b2)
+    to[in=90,out=-45] ($ (b) + (0,\dndhoroffset) $)
+  ;
+  \draw[line width=\dndthinline]
+    (b2)
+    to[in=0,out=-90]
+    ($ (b) + (-3*\dndhoroffset,0) $)
+  ;%
 }
 
 \newcommand{\dnd@CornerOneBottomLeft}{%
-\draw[line width=\dndfatline]
-	($ (c) + (\dndhoroffset, 0) + (\dndfatline, 0) $)
-	-- ($ (c) + (\dndhoroffset, 0) $)
-	arc (0:90:\dndhoroffset)
-	-- ($ (c) + (-\dndhoroffset/4,\dndveroffset/2)$)
-	to[in=275,out=70] ($ (c) + (0,\dndveroffset) $)
-	-- ($ (c) + (0,\dndveroffset) + (0, \dndfatline) $)
-;
-\draw[line width=\dndmedline]
-	($ (c) + (0,\dndveroffset) $)
-	to[in=60,out=270] ($ (c) + (-\dndhoroffset/3,2*\dndveroffset/3) $)
-	arc (60:-10:\dndhoroffset)
-	coordinate (c2)
-	to[in=90,out=-135] ($ (c) + (0,\dndhoroffset) $)
-;
-\draw[line width=\dndthinline]
-	(c2)
-	to[in=180,out=-90]
-	($ (c) + (3*\dndhoroffset,0) $)
-;%
+  \draw[line width=\dndfatline]
+    ($ (c) + (\dndhoroffset, 0) + (\dndfatline, 0) $)
+    -- ($ (c) + (\dndhoroffset, 0) $)
+    arc (0:90:\dndhoroffset)
+    -- ($ (c) + (-\dndhoroffset/4,\dndveroffset/2)$)
+    to[in=275,out=70] ($ (c) + (0,\dndveroffset) $)
+    -- ($ (c) + (0,\dndveroffset) + (0, \dndfatline) $)
+  ;
+  \draw[line width=\dndmedline]
+    ($ (c) + (0,\dndveroffset) $)
+    to[in=60,out=270] ($ (c) + (-\dndhoroffset/3,2*\dndveroffset/3) $)
+    arc (60:-10:\dndhoroffset)
+    coordinate (c2)
+    to[in=90,out=-135] ($ (c) + (0,\dndhoroffset) $)
+  ;
+  \draw[line width=\dndthinline]
+    (c2)
+    to[in=180,out=-90]
+    ($ (c) + (3*\dndhoroffset,0) $)
+  ;%
 }
 
 % TODO: Type two
 
-\newcommand{\dndblockTwo}[2]{%
+\newcommand{\dndblock}[2]{%
 \begin{minipage}{\columnwidth}
 \begin{tikzpicture}
 \begin{scope}
-%\node[inner sep=0pt,outer sep=0pt,text width=.5\textwidth](t){#2};
-\node[inner sep=0pt,outer sep=0pt,text width=\columnwidth-2*\dndpaddingsize,draw=blue!80, thick](t){#2};
-
-\coordinate (O) at ($ (t.north west) + (-\dndpaddingsize, \dndpaddingsize) $);
-\coordinate (A) at ($ (t.north east) + ( \dndpaddingsize, \dndpaddingsize) $);
-\coordinate (B) at ($ (t.south east) + ( \dndpaddingsize,-\dndpaddingsize) + (0,-\dndbottompadding) $);
-\coordinate (C) at ($ (t.south west) + (-\dndpaddingsize,-\dndpaddingsize) + (0,-\dndbottompadding) $);
-
-\coordinate (o) at ($ (t.north west) + (-\dnddrawsize, \dnddrawsize) $);
-\coordinate (a) at ($ (t.north east) + ( \dnddrawsize, \dnddrawsize) $);
-\coordinate (b) at ($ (t.south east) + ( \dnddrawsize,-\dnddrawsize) + (0,-\dndbottompadding) $);
-\coordinate (c) at ($ (t.south west) + (-\dnddrawsize,-\dnddrawsize) + (0,-\dndbottompadding) $);
-
-\path[clip]
-	(O)
-	rectangle
-	(B)
-;
-
-% lines
-\dnd@Lines{}
-
-% top left corner
-\dnd@CornerOneTopLeft{}
-
-% top right corner
-\dnd@CornerOneTopRight{}
-
-% bottom right corner
-\dnd@CornerOneBottomRight{}
-
-% bottom left corner
-\dnd@CornerOneBottomLeft{}
-
-\path
-	(c)
-	-- (b)
-	node[midway, above] { {\large\bfseries #1} }
-;
+  %\node[inner sep=0pt,outer sep=0pt,text width=.5\textwidth](t){#2};
+  \dnd@Content{#2}
+  
+  % lines
+  \dnd@Lines{}
+  
+  % top left corner
+  \dnd@CornerOneTopLeft{}
+  
+  % top right corner
+  \dnd@CornerOneTopRight{}
+  
+  % bottom right corner
+  \dnd@CornerOneBottomRight{}
+  
+  % bottom left corner
+  \dnd@CornerOneBottomLeft{}
+  
+  \path
+    (c)
+    -- (b)
+    node[midway, above] { {\large\bfseries #1} }
+  ;
 \end{scope}
 \end{tikzpicture}
 \end{minipage}
 }
-
 \makeatother
