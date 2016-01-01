@@ -2,7 +2,7 @@
 
 % gimme moar space!
 %\usepackage[cm,empty]{fullpage}
-\usepackage[outer=16mm,inner=5mm,top=1cm,bottom=1cm]{geometry}
+\usepackage[outer=21mm,inner=10mm,top=2cm,bottom=2cm]{geometry}
 
 % smaller + signs in math environment <3
 \usepackage{MnSymbol}
@@ -13,6 +13,9 @@
 
 % multiple columns
 \usepackage{multicol,adjmulticol}
+
+% multicol & multirow in tables
+\usepackage{multirow}
 
 % font
 \usepackage[utf8]{inputenc}
@@ -32,8 +35,8 @@
 \input{includes/block-settings}
 \input{includes/block-commands}
 
-\begin{document}
-\begin{multicols*}{3}
+\begin{document} \pagestyle{empty}
+\begin{multicols}{3}
 
 \begin{minipage}{\columnwidth}
   \section*{\LARGE Aryn}
@@ -63,17 +66,24 @@ Death Saves: \\
 \end{tabular}
 }
 
-\dndblockTwoB{Saving Throws}{%
+\dndblockTwo{Saving Throws}{%
 \setlength{\tabcolsep}{2pt}
 \begin{tabular}{c|c|c|c|c|c}
    \textsc{Str} & \textsc{Dex} & \textsc{Con} & \textsc{Int} & \textsc{Wis} & \textsc{Cha} \\
-    7 &  14 &  16 &  14 &  20 &  10 \\
-  \dndModifierBold{-2} & \dndModifierBold{+2} & \dndModifierBold{+3} &
-  \dndModifierBold{+2} & \dndModifierBold{+5} & \dndModifierBold{0} \\
+  \dndModifier{-2} & \dndModifier{+2} & \dndModifier{+3} &
+  \dndModifierProficient{+2} & \dndModifierProficient{+5} & \dndModifier{0} \\
 \end{tabular}
 }
 
-\dndblock{Skills 2}{%
+\dndblockTwo{Armor Class}{%
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{cccc|c}
+  Armor & \textsc{Dex} & Shield & Magic & Total \\
+   10+2 & \dndModifier{+2} & +2 & 0	& 16
+\end{tabular}
+}
+
+\dndblockTwoB{Skills}{%
 \begin{tabular}{rl}
   \dndModifier{+2} & Acrobatics \\
   \dndModifier{+5} & Animal Handling \\
@@ -96,99 +106,62 @@ Death Saves: \\
 \end{tabular}
 }
 
-\dndblock{Skills 3}{%
-\begin{tabular}{rl}
-  \dndModifier{+2} & Acrobatics \\
-  \dndModifier{+5} & Animal Handling \\
-  \dndModifier{+2} & Arcana \\
-  \dndModifierProficient{+1} & \dndTextProficient{Athletics}\\
-  \dndModifier{ 0} & Deception\\
-  \dndModifier{+2} & History\\
-  \dndModifier{+5} & Insight\\
-  \dndModifier{ 0} & Intimidation\\
-  \dndModifierProficient{+5} & \dndTextProficient{Investigation}\\
-  \dndModifierProficient{+8} & \dndTextProficient{Medicine}\\
-  \dndModifierProficient{+5} & \dndTextProficient{Nature}\\
-  \dndModifierProficient{+8} & \dndTextProficient{Perception}\\
-  \dndModifier{ 0} & Performance\\
-  \dndModifier{ 0} & Persuasion\\
-  \dndModifier{+2} & Religion\\
-  \dndModifier{+2} & Sleight of Hand\\
-  \dndModifier{+2} & Stealth\\
-  \dndModifierProficient{+8} & \dndTextProficient{Survival}
+\dndblock{Proficiencies}{%
+\dndhorfitblock{%
+\textbf{Languages} Common, Druidic, Elvish, Dwarvish, SomeLanguage \\
+\textbf{Weapons} Clubs, Daggers, Darts, Javelins, Maces, Quarterstaffs, Scimitars, Sickles, Slings, Spears \\
+\textbf{Armors} Light armor, medium armor, shields (druids will not wear armor or use shields made of metal) \\
+\textbf{Toolkit} Herbalism kit
+}
+}
+
+\dndblockTwoB{Treasure}{%
+\begin{tabular}{l|r}
+  \begin{tabular}{rr}
+  0 & PP \\
+  50 & GP \\
+  0 & EP \\
+  0 & SP \\
+  0 & CP
+  \end{tabular} & \begin{tabular}{r}
+  Snakeskin \\
+  Dragon Tooth
+  \end{tabular}
 \end{tabular}
 }
 
-\dndblockTwoA{Skills 4}{%
-\begin{tabular}{rl}
-  \dndModifier{+2} & Acrobatics \\
-  \dndModifier{+5} & Animal Handling \\
-  \dndModifier{+2} & Arcana \\
-  \dndModifierProficient{+1} & \dndTextProficient{Athletics}\\
-  \dndModifier{ 0} & Deception\\
-  \dndModifier{+2} & History\\
-  \dndModifier{+5} & Insight\\
-  \dndModifier{ 0} & Intimidation\\
-  \dndModifierProficient{+5} & \dndTextProficient{Investigation}\\
-  \dndModifierProficient{+8} & \dndTextProficient{Medicine}\\
-  \dndModifierProficient{+5} & \dndTextProficient{Nature}\\
-  \dndModifierProficient{+8} & \dndTextProficient{Perception}\\
-  \dndModifier{ 0} & Performance\\
-  \dndModifier{ 0} & Persuasion\\
-  \dndModifier{+2} & Religion\\
-  \dndModifier{+2} & Sleight of Hand\\
-  \dndModifier{+2} & Stealth\\
-  \dndModifierProficient{+8} & \dndTextProficient{Survival}
+\dndblockTwoA{Equipment}{%
+\begin{tabular}{l}
+  Ash Shield \\
+  Studded Leather Armor \\
+  Backpack \\
+  Waterskin \\
+  Traveller's Clothes \\
+  Oak Quarterstaff \\
+  Druidic Focus \\
+  Staff of the Python \\
+  Bedroll \\
+  Boots of Striding and Springing
 \end{tabular}
 }
 
-\dndblock{Skills 5}{%
-\begin{tabular}{rl}
-  \dndModifier{+2} & Acrobatics \\
-  \dndModifier{+5} & Animal Handling \\
-  \dndModifier{+2} & Arcana \\
-  \dndModifierProficient{+1} & \dndTextProficient{Athletics}\\
-  \dndModifier{ 0} & Deception\\
-  \dndModifier{+2} & History\\
-  \dndModifier{+5} & Insight\\
-  \dndModifier{ 0} & Intimidation\\
-  \dndModifierProficient{+5} & \dndTextProficient{Investigation}\\
-  \dndModifierProficient{+8} & \dndTextProficient{Medicine}\\
-  \dndModifierProficient{+5} & \dndTextProficient{Nature}\\
-  \dndModifierProficient{+8} & \dndTextProficient{Perception}\\
-  \dndModifier{ 0} & Performance\\
-  \dndModifier{ 0} & Persuasion\\
-  \dndModifier{+2} & Religion\\
-  \dndModifier{+2} & Sleight of Hand\\
-  \dndModifier{+2} & Stealth\\
-  \dndModifierProficient{+8} & \dndTextProficient{Survival}
-\end{tabular}
-}
+\dndblock{Weapons}{%
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcl}
+  \multicolumn{3}{c}{\bf Quarterstaff} \\
+  Attack & \dndModifier{+1} \\
+  Damage & \dndModifier{1d6-2} & bludgeoning \\
 
-\dndblockTwoB{Skills 6}{%
-\begin{tabular}{rl}
-  \dndModifier{+2} & Acrobatics \\
-  \dndModifier{+5} & Animal Handling \\
-  \dndModifier{+2} & Arcana \\
-  \dndModifierProficient{+1} & \dndTextProficient{Athletics}\\
-  \dndModifier{ 0} & Deception\\
-  \dndModifier{+2} & History\\
-  \dndModifier{+5} & Insight\\
-  \dndModifier{ 0} & Intimidation\\
-  \dndModifierProficient{+5} & \dndTextProficient{Investigation}\\
-  \dndModifierProficient{+8} & \dndTextProficient{Medicine}\\
-  \dndModifierProficient{+5} & \dndTextProficient{Nature}\\
-  \dndModifierProficient{+8} & \dndTextProficient{Perception}\\
-  \dndModifier{ 0} & Performance\\
-  \dndModifier{ 0} & Persuasion\\
-  \dndModifier{+2} & Religion\\
-  \dndModifier{+2} & Sleight of Hand\\
-  \dndModifier{+2} & Stealth\\
-  \dndModifierProficient{+8} & \dndTextProficient{Survival}
+  \multicolumn{3}{c}{\bf Quarterstaff (Shillelagh)} \rule{0pt}{4ex} \\
+  Attack & \dndModifierProficient{+8} \\
+  Damage & \dndModifierProficient{1d8+5} & bludgeoning \\
+
+  \multicolumn{3}{c}{\bf Sling} \rule{0pt}{4ex} \\
+  Attack & \dndModifierProficient{+5} & 30/120 \\
+  Damage & \dndModifierProficient{1d4+2} & bludgeoning
 \end{tabular}
 }
 
 
-
-\end{multicols*}
+\end{multicols}
 \end{document}

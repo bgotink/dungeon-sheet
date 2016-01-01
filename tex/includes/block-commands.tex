@@ -1,6 +1,19 @@
-\usepackage{pdftexcmds}
+\usepackage{pdftexcmds,varwidth}
 
 \makeatletter
+
+\newcommand{\dnd@BoxTextWidth}{\columnwidth-2*\dndpaddingsize}
+
+%
+% Limits line length to text width
+% (public)
+%
+
+\newcommand{\dndhorfitblock}[1]{%
+\begin{varwidth}{.75\columnwidth}% TODO de-dirtify
+  #1
+\end{varwidth}
+}
 
 %
 % Draws the content in a box
@@ -12,19 +25,19 @@
   
   \path
     (0,0)
-    -- (\columnwidth-2*\dndpaddingsize,0)
-    node[midway, below, inner sep=0pt, outer sep=0pt, minimum width=\columnwidth-2*\dndpaddingsize, draw=blue!80, thick] (t) {#1}
-  ;
+    -- (\dnd@BoxTextWidth,0)
+    node[midway, below, inner sep=0pt, outer sep=0pt, minimum width=\dnd@BoxTextWidth, align=justify] (t) {#1}
+  ; % , draw=blue!80, thick
     
-  \coordinate (O) at ($ (t.north west) + (-\dndpaddingsize, \dndpaddingsize) $);
-  \coordinate (A) at ($ (t.north east) + ( \dndpaddingsize, \dndpaddingsize) $);
-  \coordinate (B) at ($ (t.south east) + ( \dndpaddingsize,-\dndpaddingsize) + (0,-\dndbottompadding) $);
-  \coordinate (C) at ($ (t.south west) + (-\dndpaddingsize,-\dndpaddingsize) + (0,-\dndbottompadding) $);
+  \coordinate (O) at ($ (0, 0) + (-\dndpaddingsize, \dndpaddingsize) $);
+  \coordinate (A) at ($ (\dnd@BoxTextWidth, 0) + ( \dndpaddingsize, \dndpaddingsize) $);
+  \path let \p1=(t.south east) in ($ (\dnd@BoxTextWidth, \y1) + ( \dndpaddingsize,-\dndpaddingsize) + (0,-\dndbottompadding) $) node (B) {};
+  \path let \p1=(t.south east) in ($ (0, \y1) + (-\dndpaddingsize,-\dndpaddingsize) + (0,-\dndbottompadding) $) node (C) {};
   
-  \coordinate (o) at ($ (t.north west) + (-\dnddrawsize, \dnddrawsize) $);
-  \coordinate (a) at ($ (t.north east) + ( \dnddrawsize, \dnddrawsize) $);
-  \coordinate (b) at ($ (t.south east) + ( \dnddrawsize,-\dnddrawsize) + (0,-\dndbottompadding) $);
-  \coordinate (c) at ($ (t.south west) + (-\dnddrawsize,-\dnddrawsize) + (0,-\dndbottompadding) $);
+  \coordinate (o) at ($ (0, 0) + (-\dnddrawsize, \dnddrawsize) $);
+  \coordinate (a) at ($ (\dnd@BoxTextWidth, 0) + ( \dnddrawsize, \dnddrawsize) $);
+  \path let \p1=(t.south east) in ($ (\dnd@BoxTextWidth, \y1) + ( \dnddrawsize,-\dnddrawsize) + (0,-\dndbottompadding) $) node (b) {};
+  \path let \p1=(t.south east) in ($ (0, \y1) + (-\dnddrawsize,-\dnddrawsize) + (0,-\dndbottompadding) $) node (c) {};
   
   \path[clip]
     (O)
@@ -38,19 +51,24 @@
 %
 
 \newcommand{\dnd@Lines}{%
-  \draw[line width=\dndfatline, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (o) -- (a);
-  \draw[line width=\dndfatline, shorten <= \dndveroffset, shorten >= \dndveroffset] (a) -- (b);
-  \draw[line width=\dndfatline, shorten <= \dndhoroffset, shorten >= \dndhoroffset] (b) -- (c);
-  \draw[line width=\dndfatline, shorten <= \dndveroffset, shorten >= \dndveroffset] (c) -- (o);%
+  \draw[line width=\dndfatline]
+    ($ (o) + (\dndhoroffset,0) $)
+    -- ($ (a) - (\dndhoroffset,0) $)
+    ($ (a) - (0,\dndveroffset) $)
+    -- ($ (b) + (0,\dndveroffset) $)
+    ($ (b) - (\dndhoroffset,0) $)
+    -- ($ (c) + (\dndhoroffset,0) $)
+    ($ (c) + (0,\dndveroffset) $)
+    -- ($ (o) - (0,\dndveroffset) $)
+  ;
 }
 
 \newcommand{\dnd@LinesVerticalThin}{%
-  \draw[line width=\dndmedline, shorten <= \dndveroffset, shorten >= \dndveroffset]
-    ($ (o) + (\dndverlinesep,0) $)
-    -- ($ (c) + (\dndverlinesep,0) $);
-  \draw[line width=\dndmedline, shorten <= \dndveroffset, shorten >= \dndveroffset]
-    ($ (b) - (\dndverlinesep,0) $)
-    -- ($ (a) - (\dndverlinesep,0) $)
+  \draw[line width=\dndmedline]
+    ($ (o) + (\dndverlinesep,-\dndveroffset) $)
+    -- ($ (c) + (\dndverlinesep,\dndveroffset) $)
+    ($ (b) + (-\dndverlinesep,\dndveroffset) $)
+    -- ($ (a) + (-\dndverlinesep,-\dndveroffset) $)
   ;%
 }
 
@@ -204,6 +222,56 @@
   \end{scope}%
 }
 
+\newcommand{\dnd@CornerTwoBottomRight}{%
+  \draw[line width=\dndfatline]
+    ($ (b) - (\dndhoroffset, 0) - (\dndfatline, 0) $)
+    -- ($ (b) - (\dndhoroffset, 0) $)
+    arc (180:90:\dndhoroffset)
+    -- ($ (b) + (0,\dndveroffset) + (0,\dndfatline) $)
+  ;
+  \begin{scope}
+    \draw[name path=cutoff,line width=\dndmedfatline]
+      ($ (b) - (2.5*\dndhoroffset,0) $)
+      to[in=-110,out=10]
+      ($ (b) + (0,3*\dndhoroffset) $)
+    ;
+    \path[name path=vertical]
+      ($ (b) + (-\dndverlinesep,\dndveroffset) $)
+      -- ($ (b) + (-\dndverlinesep,0) $)
+    ;
+    \path[name intersections={of=cutoff and vertical,by={e}}] ;
+    \draw[line width=\dndmedline]
+      ($ (b) + (-\dndverlinesep,\dndveroffset) $)
+      -- ($ (e) $)
+    ;
+  \end{scope}%
+}
+
+\newcommand{\dnd@CornerTwoBottomLeft}{%
+  \draw[line width=\dndfatline]
+    ($ (c) + (\dndhoroffset, 0) + (\dndfatline, 0) $)
+    -- ($ (c) - (-\dndhoroffset, 0) $)
+    arc (0:90:\dndhoroffset)
+    -- ($ (c) + (0,\dndveroffset) + (0,\dndfatline) $)
+  ;
+  \begin{scope}
+    \draw[name path=cutoff,line width=\dndmedfatline]
+      ($ (c) + (2.5*\dndhoroffset,0) $)
+      to[in=-70,out=170]
+      ($ (c) + (0,3*\dndhoroffset) $)
+    ;
+    \path[name path=vertical]
+      ($ (c) + (\dndverlinesep,\dndveroffset) $)
+      -- ($ (c) + (\dndverlinesep,0) $)
+    ;
+    \path[name intersections={of=cutoff and vertical,by={e}}] ;
+    \draw[line width=\dndmedline]
+      ($ (c) + (\dndverlinesep,\dndveroffset) $)
+      -- ($ (e) $)
+    ;
+  \end{scope}%
+}
+
 \newcommand{\dnd@CornerTwoABottomRight}{%
   \draw[line width=\dndfatline]
     ($ (b) + (-\dndhoroffset, 0) + (-\dndfatline, 0) $)
@@ -317,7 +385,40 @@
   \path
     (c)
     -- (b)
-    node[midway, above] { {\large\bfseries #1} }
+    node[midway, above] { {\large\bfseries\sc #1} }
+  ;
+\end{scope}
+\end{tikzpicture}
+\end{minipage}
+}
+
+\newcommand{\dndblockTwo}[2]{%
+\begin{minipage}{\columnwidth}
+\begin{tikzpicture}
+\begin{scope}
+  %\node[inner sep=0pt,outer sep=0pt,text width=.5\textwidth](t){#2};
+  \dnd@Content{#2}
+  
+  % lines
+  \dnd@Lines{}
+  \dnd@LinesVerticalThin{}
+  
+  % top left corner
+  \dnd@CornerTwoTopLeft{}
+  
+  % top right corner
+  \dnd@CornerTwoTopRight{}
+  
+  % bottom right corner
+  \dnd@CornerTwoBottomRight{}
+  
+  % bottom left corner
+  \dnd@CornerTwoBottomLeft{}
+  
+  \path
+    (c)
+    -- (b)
+    node[midway, above] { {\large\bfseries\sc #1} }
   ;
 \end{scope}
 \end{tikzpicture}
