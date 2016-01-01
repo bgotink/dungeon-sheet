@@ -1,2 +1,11 @@
+# by default: ignore everything
 *
 !.gitignore
+
+# except these six backgrounds that are part of the Basic Ruleset
+!acolyte.js
+!criminal.js
+!folk-hero.js
+!noble.js
+!sage.js
+!soldier.js

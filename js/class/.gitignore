@@ -1,2 +1,9 @@
+# by default: ignore everything
 *
 !.gitignore
+
+# except these four classes that are part of the Basic Ruleset
+!cleric.js
+!wizard.js
+!fighter.js
+!rogue.js

@@ -1,2 +1,9 @@
+# by default: ignore everything
 *
 !.gitignore
+
+# except these four races that are part of the Basic Ruleset
+!dwarf.js
+!elf.js
+!halfling.js
+!human.js
