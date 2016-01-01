@@ -1,0 +1,216 @@
+\documentclass[a4]{article}
+
+% gimme moar space!
+%\usepackage[cm,empty]{fullpage}
+\usepackage[outer=21mm,inner=10mm,top=2cm,bottom=2cm]{geometry}
+
+% smaller + signs in math environment <3
+\usepackage{MnSymbol}
+
+% used for drawing the pretty boxes etc.
+\usepackage{tikz}
+\usetikzlibrary{calc,intersections}
+
+% multiple columns
+\usepackage{multicol,adjmulticol}
+
+% multicol & multirow in tables
+\usepackage{multirow}
+
+% font
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{huncial} % TODO find font?
+
+% directory of the includes
+
+\newcommand{\dndincludes}{<{= includeDirectory }>}
+
+% custom commands
+
+\input{\dndincludes/commands}
+
+% Blocks
+
+\input{\dndincludes/block-settings}
+\input{\dndincludes/block-commands}
+
+\begin{document} \pagestyle{empty}
+\begin{multicols}{3}
+
+\begin{minipage}{\columnwidth}
+  \section*{\LARGE <{= character.getName() }>}
+  L<{= character.getLevel() }> | <{= character.getRace() }> | <{= character.getClass() }> | <{= character.getAlignment() }>
+\end{minipage}
+
+\dndblock{General Information}{%
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{c|c|c|c|c|c}
+  \textsc{Str} & \textsc{Dex} & \textsc{Con} & \textsc{Int} & \textsc{Wis} & \textsc{Cha} \\
+  <{= character.getStat('STR') }> & <{= character.getStat('DEX') }> &
+  <{= character.getStat('CON') }> & <{= character.getStat('INT') }> &
+  <{= character.getStat('WIS') }> & <{= character.getStat('CHA') }> \\
+  \dndModifierBold{<{= character.getStatModifier('STR') }>} &
+  \dndModifierBold{<{= character.getStatModifier('DEX') }>} &
+  \dndModifierBold{<{= character.getStatModifier('CON') }>} &
+  \dndModifierBold{<{= character.getStatModifier('INT') }>} &
+  \dndModifierBold{<{= character.getStatModifier('WIS') }>} &
+  \dndModifierBold{<{= character.getStatModifier('CHA') }>} \\
+  \hline \rule{0pt}{2.5ex}
+  HP & Prof & Init & Spd & Ins & PP \\
+  <{= character.getHitPoints() }> & \dndModifierBold{<{= character.getProfiencyBonus() }>} & \dndModifier{<{= character.getInitiative() }>} & <{= character.getSpeed() }> & & <{= character.getPassivePerception() }>
+\end{tabular}
+}
+
+\dndblockTwoA{Health}{%
+\begin{tabular}{l}
+Hit Die (<{= character.getHitDie() }>) used: \hspace{3ex} / <{= character.getLevel() }> \\
+Current HP: \\ Temporary HP: \\
+Death Saves: \\
+\hspace{4em} Success: $\Box$ $\Box$ $\Box$ \\
+\hspace{4em} Failed: $\Box$ $\Box$ $\Box$ \\
+\end{tabular}
+}
+
+\dndblockTwo{Saving Throws}{%
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{c|c|c|c|c|c}
+  \textsc{Str} & \textsc{Dex} & \textsc{Con} & \textsc{Int} & \textsc{Wis} & \textsc{Cha} \\
+  <{ _.each(['STR','DEX','CON','INT','WIS','CHA'], function (stat, idx, list) {
+    if (character.isSavingThrowProficient(stat)) {
+      }>\dndModifierProficient{<{= character.getSavingThrow(stat) }>}<{
+    } else {
+      }>\dndModifier{<{= character.getSavingThrow(stat) }>}<{
+    }
+
+    if (idx < list.length - 1) {
+      }>&<{
+    }
+  }) }> \\
+\end{tabular}
+}
+
+\dndblockTwo{Armor Class}{%
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{cccc|c}
+  Armor & \textsc{Dex} & Shield & Magic & Total \\
+   \(10<{= character.getACArmor() }>\) &
+   \dndModifier{<{= character.getACDex() }>} &
+   \dndModifier{<{= character.getACShield() }>} &
+   \dndModifier{<{= character.getACMagic() }>} &
+   <{= character.getAC() }>
+\end{tabular}
+}
+
+\dndblockTwoB{Skills}{%
+\begin{tabular}{rl}
+  <{
+    _.forEach([
+      [ 'acrobatics', 'Acrobatics' ],
+      [ 'animal handling', 'Animal Handling' ],
+      [ 'arcana', 'Arcana' ],
+      [ 'athletics', 'Athletics' ],
+      [ 'deception', 'Deception' ],
+      [ 'history', 'History' ],
+      [ 'insight', 'Insight' ],
+      [ 'intimidation', 'Intimidation' ],
+      [ 'investigation', 'Investigation' ],
+      [ 'medicine', 'Medicine' ],
+      [ 'nature', 'Nature' ],
+      [ 'perception', 'Perception' ],
+      [ 'performance', 'Performance' ],
+      [ 'persuasion', 'Persuasion' ],
+      [ 'religion', 'Religion' ],
+      [ 'sleight of hand', 'Sleight of Hand' ],
+      [ 'stealth', 'Stealth' ],
+      [ 'survival', 'Survival' ]
+    ], function (el) {
+      if (character.isSkillProficient(el[0])) {
+        }>\dndModifierProficient{<{= character.getSkill(el[0]) }>} & \dndTextProficient{<{= el[1] }>} \\<{
+      } else {
+        }>\dndModifier{<{= character.getSkill(el[0]) }>} & <{= el[1] }> \\<{
+      }
+    }); }>
+\end{tabular}
+}
+
+\dndblock{Proficiencies}{%
+\dndhorfitblock{%
+  <{ _.forEach([
+    [ 'languages', 'Languages', 'Language' ],
+    [ 'weapons', 'Weapons', 'Weapon' ],
+    [ 'armors', 'Armors', 'Armor' ],
+    [ 'tools', 'Toolkits', 'Toolkit' ],
+    [ 'others', 'Other', 'Other' ]
+  ], function (el) {
+    if (character.hasProficiencies(el[0])) {
+      var prof = character.getProficiencies(el[0]);
+
+      if (prof.length > 1) {
+        }>\textbf{<{= el[1] }>}<{
+      } else {
+        }>\textbf{<{= el[2] }>}<{
+      }
+      }>: <{= prof.join(', ') }>\\<{
+    }
+  }); }>
+}
+}
+
+\dndblockTwoB{Treasure}{%
+\begin{tabular}{l|r}
+  \begin{tabular}{rr}
+    <{
+      _.forEach([ 'pp', 'gp', 'ep', 'sp', 'cp' ], function (curr) {
+        }><{= character.getTreasure()[curr] }> & <{= curr.toUpperCase() }> \\<{
+      });
+    }>
+  \end{tabular} & \begin{tabular}{r}
+  <{= character.getTreasure().items.join('\\\\') }>
+  \end{tabular}
+\end{tabular}
+}
+
+\dndblockTwoA{Equipment}{%
+\begin{tabular}{l}
+  <{
+    _.forEach(character.getEquipment(), function (el, i) {
+      }><{= el }><{
+      if (i % 2 === 0) {
+        }> & <{
+      } else {
+        }> \\
+        <{
+      }
+    });
+  }>
+\end{tabular}
+}
+
+\dndblock{Weapons}{%
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcl}
+  <{
+    _.forEach(character.getWeapons(), function (weapon, idx) {
+      var mod = weapon.proficient ? 'dndModifierProficient' : 'dndModifier';
+      }>
+      \multicolumn{3}{c}{\bf <{= weapon.name }>}<{ if (idx) { }>\rule{0pt}{4ex} <{ } }> \\
+      Attack &
+        \<{= mod }>{<{= weapon.attackModifier }>} &
+        <{ if (weapon.range) { }>range <{= weapon.range }><{ } }> \\
+      Damage &
+        <{ if (weapon.damageModifier == 0) {
+          }>\<{= mod }>{<{= weapon.die }>} &<{
+        } else {
+          }>\<{= mod }>{<{= weapon.die }><{= weapon.damageModifier }>} &<{
+        } }>
+        <{= weapon.damageType }> \\
+      <{
+    });
+  }>
+\end{tabular}
+}
+
+
+\end{multicols}
+\end{document}

@@ -3,6 +3,8 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const jade = require('gulp-jade');
+const latex = require('gulp-latex');
+const template = require('gulp-template');
 
 const path = require('path');
 
@@ -35,6 +37,27 @@ gulp.task('jade', function () {
           },
         }))
         .pipe(gulp.dest('build/'))
+        .on('end', resolve)
+        .on('error', reject);
+    });
+  });
+});
+
+gulp.task('latex', function () {
+  return require('./js')(argv.character)
+  .then(function (character) {
+    return new Promise(function(resolve, reject) {
+      gulp.src('tex/template.tex-template')
+        .pipe(template({
+          character,
+          includeDirectory: path.resolve(__dirname, './tex/includes')
+        }, {
+          escape: /<\{-([\s\S]+?)\}>/g,
+          evaluate: /<\{([\s\S]+?)\}>/g,
+          interpolate: /<\{=([\s\S]+?)\}>/g,
+        }))
+        .pipe(latex())
+        .pipe(gulp.dest('build'))
         .on('end', resolve)
         .on('error', reject);
     });
