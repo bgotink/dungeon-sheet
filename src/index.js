@@ -5,8 +5,8 @@ const vm = require('./vm');
 const fs = require('fs');
 
 module.exports = function createCharacter(filename) {
-  const builder = new CharacterBuilder();
-  const sandbox = vm.createContext(builder.getPublicApi());
+  let builder = new CharacterBuilder();
+  let sandbox = vm.createContext(builder.getPublicApi());
 
   return vm.runFileInContext(filename, sandbox, {
     displayErrors: false,

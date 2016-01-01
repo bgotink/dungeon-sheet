@@ -16,7 +16,7 @@ const SASS_DIR = path.resolve(
 );
 
 gulp.task('sass', function () {
-  return gulp.src('style/character.scss', { base: 'style/' })
+  return gulp.src('lib/html/style/character.scss', { base: 'lib/html/style/' })
     .pipe(sass({
       includePaths: [
         SASS_DIR
@@ -26,10 +26,10 @@ gulp.task('sass', function () {
 });
 
 gulp.task('jade', function () {
-  return require('./js')(argv.character)
+  return require('./src')(argv.character)
   .then(function (character) {
     return new Promise(function(resolve, reject) {
-      gulp.src('main.jade')
+      gulp.src('lib/html/main.jade', { base: 'lib/html/' })
         .pipe(jade({
           pretty: true,
           locals: {
@@ -44,13 +44,13 @@ gulp.task('jade', function () {
 });
 
 gulp.task('latex', function () {
-  return require('./js')(argv.character)
+  return require('./src')(argv.character)
   .then(function (character) {
     return new Promise(function(resolve, reject) {
-      gulp.src('tex/template.tex-template')
+      gulp.src('lib/tex/template.tex-template')
         .pipe(template({
           character,
-          includeDirectory: path.resolve(__dirname, './tex/includes')
+          includeDirectory: path.resolve(__dirname, './lib/tex/includes')
         }, {
           escape: /<\{-([\s\S]+?)\}>/g,
           evaluate: /<\{([\s\S]+?)\}>/g,
