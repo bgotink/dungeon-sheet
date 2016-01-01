@@ -18,14 +18,6 @@ module.exports = {
 
   builder: {
     proficiencies: {
-      skills: {
-        count: 0,
-      },
-
-      languages: {
-        count: 0,
-      },
-
       tools: {
         count: 1,
         options: [
@@ -35,7 +27,21 @@ module.exports = {
         ],
       }
     },
-  }
+  },
 
-  // TODO: subraces!
+  sub: {
+    hill: {
+      name: 'Hill Dwarf',
+    },
+    mountain: {
+      name: 'Mountain Dwarf',
+
+      proficiencies: {
+        armors: [
+          'Light Armor',
+          'Medium Armor',
+        ],
+      },
+    },
+  },
 };

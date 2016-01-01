@@ -12,20 +12,16 @@ module.exports = {
   },
 
   builder: {
-    proficiencies: {
-      skills: {
-        count: 0,
-      },
+    proficiencies: {},
+  },
 
-      languages: {
-        count: 0,
-      },
-
-      tools: {
-        count: 0,
-      }
+  sub: {
+    lightfoot: {
+      name: 'Lightfoot Halfling',
     },
-  }
 
-  // TODO: subraces!
+    stout: {
+      name: 'Stout Halfling',
+    },
+  },
 };

@@ -13,30 +13,41 @@ module.exports = {
     skills: [
       Character.skills.perception,
     ],
-
-    weapons: [
-      'Battleaxe',
-      'Handaxe',
-      'Light Hammer',
-      'Warhammer',
-    ],
   },
 
-  builder: {
-    proficiencies: {
-      skills: {
-        count: 0,
+  sub: {
+    high: {
+      name: 'High Elf',
+
+      proficiencies: {
+        weapons: [
+          'Longsword',
+          'Shortsword',
+          'Shortbow',
+          'Longbow',
+        ],
       },
 
-      languages: {
-        count: 0,
+      builder: {
+        proficiencies: {
+          languages: {
+            count: 1,
+          },
+        },
       },
-
-      tools: {
-        count: 0,
-      }
     },
-  }
 
-  // TODO: subraces!
+    wood: {
+      name: 'Wood Elf',
+
+      proficiencies: {
+        weapons: [
+          'Longsword',
+          'Shortsword',
+          'Shortbow',
+          'Longbow',
+        ],
+      },
+    },
+  },
 };

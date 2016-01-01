@@ -341,12 +341,16 @@ function CharacterModifier(type, name, builder) {
     selectedTools: 0
   };
 
+  this.set = {
+    sub: false,
+  };
+
+  function makeProficient(proficiencyType) {
+    return builder.makeProficient.bind(builder, proficiencyType);
+  }
+
   if (this.data.proficiencies) {
     const proficiencies = this.data.proficiencies;
-
-    function makeProficient(proficiencyType) {
-      return builder.makeProficient.bind(builder, proficiencyType);
-    }
 
     [ 'skills', 'languages', 'armors', 'weapons', 'tools', 'others' ]
     .forEach(function (proficiencyType) {
@@ -355,12 +359,62 @@ function CharacterModifier(type, name, builder) {
       }
     });
   }
+
+  if (this.data.sub) {
+    this[`selectSub${type.charAt(0).toUpperCase()}${type.slice(1)}`] = function (sub) {
+      if (!this.data.sub.hasOwnProperty(sub)) {
+        throw new Error(`Unknown sub${type} for ${name}: ${sub}`);
+      }
+
+      if (this.set.sub) {
+        throw new Error(`Character sub${type} already set, cannot be overridden`);
+      }
+      this.set.sub = true;
+      this.__init = true;
+
+      sub = this.data.sub[sub];
+
+      if (sub.name) {
+        this.data.name = sub.name;
+      }
+
+      if (sub.proficiencies) {
+        [ 'skills', 'languages', 'armors', 'weapons', 'tools', 'others' ]
+        .forEach(function (proficiencyType) {
+          if (sub.proficiencies[proficiencyType]) {
+            sub.proficiencies[proficiencyType].forEach(makeProficient(proficiencyType));
+          }
+        });
+      }
+
+      if (sub.builder && sub.builder.proficiencies && Object.keys(sub.builder.proficiencies).length) {
+        const builder = (this.data.builder || (this.data.builder = {}));
+        builder.proficiencies = builder.proficiencies || {};
+
+        [ 'skills', 'languages', 'armors', 'weapons', 'tools', 'others' ]
+        .forEach(function (proficiencyType) {
+          if (sub.builder.proficiencies[proficiencyType]) {
+            if (!builder.proficiencies[proficiencyType]) {
+              builder.proficiencies[proficiencyType] = sub.builder.proficiencies[proficiencyType];
+            } else {
+              // TODO what to do if there's a race proficiency with some options
+              // and a subrace proficiency of the same type with other options?
+            }
+          }
+        });
+      }
+    }
+  }
 }
 
 (function () {
   function createSelectProficiencyFunction(name, proficiencyTypeName, proficiencyType, counter) {
     CharacterModifier.prototype[name] = function (value) {
-      if (!this.data.builder.proficiencies[proficiencyType]) {
+      if (
+          !this.data.builder
+          || !this.data.builder.proficiencies
+          || !this.data.builder.proficiencies[proficiencyType]
+        ) {
         throw new Error(`Character ${this.type} ${this.name} doesn't yield ${proficiencyTypeName} proficiencies`);
       }
 

@@ -11,17 +11,9 @@ module.exports = {
 
   builder: {
     proficiencies: {
-      skills: {
-        count: 0,
-      },
-
       languages: {
         count: 1,
       },
-
-      tools: {
-        count: 0,
-      }
     },
   }
 
