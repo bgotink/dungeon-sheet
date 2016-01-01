@@ -337,7 +337,8 @@ function CharacterModifier(type, name, builder) {
 
   this.counters = {
     selectedSkills: 0,
-    selectedLanguages: 0
+    selectedLanguages: 0,
+    selectedTools: 0
   };
 
   if (this.data.proficiencies) {
@@ -354,24 +355,24 @@ function CharacterModifier(type, name, builder) {
       }
     });
   }
-
-  this.__init = true;
 }
 
 (function () {
   function createSelectProficiencyFunction(name, proficiencyTypeName, proficiencyType, counter) {
     CharacterModifier.prototype[name] = function (value) {
+      if (!this.data.builder.proficiencies[proficiencyType]) {
+        throw new Error(`Character ${this.type} ${this.name} doesn't yield ${proficiencyTypeName} proficiencies`);
+      }
+
       const maxNbProficiencies = this.data.builder.proficiencies[proficiencyType].count;
       const options = this.data.builder.proficiencies[proficiencyType].options;
 
-      if (this.__init) {
-        if (!maxNbProficiencies) {
-          throw new Error(`Character ${this.type} ${this.name} doesn't yield ${proficiencyTypeName} proficiencies`);
-        }
+      if (!maxNbProficiencies) {
+        throw new Error(`Character ${this.type} ${this.name} doesn't yield ${proficiencyTypeName} proficiencies`);
+      }
 
-        if (this.counters[counter] >= maxNbProficiencies) {
-          throw new Error(`Maximum number of ${this.type} ${proficiencyTypeName} proficiencies reached`);
-        }
+      if (this.counters[counter] >= maxNbProficiencies) {
+        throw new Error(`Maximum number of ${this.type} ${proficiencyTypeName} proficiencies reached`);
       }
 
       if (options !== undefined && !options.contains(value)) {
@@ -379,10 +380,7 @@ function CharacterModifier(type, name, builder) {
       }
 
       this.builder.makeProficient(proficiencyType, value);
-
-      if (this.__init) {
-        this.counters[counter]++;
-      }
+      this.counters[counter]++;
 
       return this;
     };
@@ -390,4 +388,5 @@ function CharacterModifier(type, name, builder) {
 
   createSelectProficiencyFunction('selectSkill', 'skill', 'skills', 'selectedSkills');
   createSelectProficiencyFunction('selectLanguage', 'language', 'languages', 'selectedLanguages');
+  createSelectProficiencyFunction('selectTool', 'tool', 'tools', 'selectedTools');
 })();
