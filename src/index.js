@@ -2,7 +2,6 @@
 
 const CharacterBuilder = require('./character-builder');
 const vm = require('./vm');
-const fs = require('fs');
 
 module.exports = function createCharacter(filename) {
   let builder = new CharacterBuilder();
