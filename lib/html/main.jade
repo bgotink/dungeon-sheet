@@ -2,7 +2,9 @@ doctype
 html(lang='en')
   head
     title #{character.getName()} &mdash; L#{character.getLevel()} #{character.getRace()} #{character.getClass()}
-    link(rel='stylesheet', href='./character.css')
+
+    style(type="text/css")
+      include style/character.css
   body
     .character__container
       .character__block
