@@ -1,0 +1,58 @@
+name = 'Elrond';
+playerName = 'Bram';
+experience = '6500';
+alignment = 'Lawful Good';
+inspiration = false;
+
+hp = 25;
+speed = 30;
+
+stats = {
+  STR: 7,
+  DEX: 14,
+  CON: 16,
+  INT: 20,
+  WIS: 14,
+  CHA: 10,
+};
+
+Class = 'wizard';
+Class.selectSkill('insight');
+Class.selectSkill('investigation');
+
+Race = 'elf';
+Race.selectSubRace('high');
+Race.selectLanguage('Orkish');
+
+Background = 'sage';
+Background.selectLanguage('Dwarvish');
+Background.selectLanguage('Dark Tongue of Mordor');
+
+ac = {
+  armor: 0,
+  shield: 0,
+  magic: 0,
+};
+
+/* proficiencies: {
+  other: [ 'Flute' ],
+} */
+
+addWeapon('Quarterstaff', {
+  proficient: true,
+  die: '1d6',
+  stat: 'STR',
+  damageType: 'bludgeoning',
+});
+
+treasure = {
+  pp: 100,
+  items: [
+    'Ring of Power',
+  ],
+};
+
+equipment = [
+  'Staff',
+  'Longsword'
+];
