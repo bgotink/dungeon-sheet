@@ -7,7 +7,7 @@ const _ = require('lodash');
 
 const TEX_DIRECTORY = path.resolve(__dirname, '../../lib/tex');
 
-module.exports = function formatLaTeX(filename, character) {
+module.exports = function formatPDF(filename, character) {
   return fs.readFile(path.join(TEX_DIRECTORY, 'template.tex-template'))
   .then(function (template) {
     return _.template(template, {

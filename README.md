@@ -119,11 +119,11 @@ This results in the following [PDF][example-pdf] and [HTML][example-html] files.
 ```
 Usage:
     dungeon-sheet --help
-    dungeon-sheet [--format <latex|html>] [--include <directory>
+    dungeon-sheet [--format <pdf|html>] [--include <directory>
     [--include <directory>...]] [file [file...]]
 
 Options:
-  -f, --format   Specify output format: html or latex          [default: "html"]
+  -f, --format   Specify output format: html or pdf          [default: "html"]
   -i, --include  Specify directory/directories to load class/race/background
                  data from
 
@@ -157,7 +157,7 @@ bram:~/Documents/DnD/Characters$ tree
 I have to let `dungeon-sheet` know about my own race/class/background files, which I do using the `--include` flag:
 
 ```bash
-dungeon-sheet --include _includes --format latex aryn.character
+dungeon-sheet --include _includes --format pdf aryn.character
 dungeon-sheet --include _includes --format html thulwar.character
 ```
 

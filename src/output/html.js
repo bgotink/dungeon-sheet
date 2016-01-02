@@ -6,7 +6,7 @@ const path = require('path');
 
 const JADE_DIRECTORY = path.resolve(__dirname, '../../lib/html');
 
-module.exports = function formatLaTeX(filename, character) {
+module.exports = function formatHTML(filename, character) {
   return new Promise(function(resolve, reject) {
     resolve(jade.compileFile(
       path.join(JADE_DIRECTORY, 'main.jade'), {

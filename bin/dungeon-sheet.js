@@ -7,9 +7,9 @@ const argv = require('yargs')
     $0 [--format <latex|html>] [--include <directory> [--include <directory>...]] [file [file...]]`)
 
   .alias('f', 'format')
-  .describe('f', 'Specify output format: html or latex')
+  .describe('f', 'Specify output format: html or pdf')
   .default('f', 'html')
-  .options('f', ['html', 'latex'])
+  .options('f', ['html', 'pdf'])
 
   .alias('i', 'include')
   .describe('i', 'Specify directory/directories to load class/race/background data from')
