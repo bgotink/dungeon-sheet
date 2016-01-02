@@ -1,53 +1,53 @@
 'use strict';
 
-const Character = require('../character');
+module.exports = function ({ Character }) {
+  return {
+    name: 'Elf',
 
-module.exports = {
-  name: 'Elf',
+    proficiencies: {
+      languages: [
+        'Elvish',
+      ],
 
-  proficiencies: {
-    languages: [
-      'Elvish',
-    ],
+      skills: [
+        Character.skills.perception,
+      ],
+    },
 
-    skills: [
-      Character.skills.perception,
-    ],
-  },
+    sub: {
+      high: {
+        name: 'High Elf',
 
-  sub: {
-    high: {
-      name: 'High Elf',
-
-      proficiencies: {
-        weapons: [
-          'Longsword',
-          'Shortsword',
-          'Shortbow',
-          'Longbow',
-        ],
-      },
-
-      builder: {
         proficiencies: {
-          languages: {
-            count: 1,
+          weapons: [
+            'Longsword',
+            'Shortsword',
+            'Shortbow',
+            'Longbow',
+          ],
+        },
+
+        builder: {
+          proficiencies: {
+            languages: {
+              count: 1,
+            },
           },
         },
       },
-    },
 
-    wood: {
-      name: 'Wood Elf',
+      wood: {
+        name: 'Wood Elf',
 
-      proficiencies: {
-        weapons: [
-          'Longsword',
-          'Shortsword',
-          'Shortbow',
-          'Longbow',
-        ],
+        proficiencies: {
+          weapons: [
+            'Longsword',
+            'Shortsword',
+            'Shortbow',
+            'Longbow',
+          ],
+        },
       },
     },
-  },
+  };
 };

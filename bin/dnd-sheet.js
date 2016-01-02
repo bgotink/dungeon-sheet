@@ -1,15 +1,21 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --harmony --harmony_destructuring
 'use strict';
 
 const argv = require('yargs')
   .usage(`Usage:
     $0 --help
-    $0 [--format <latex|html>] [file [file...]]`)
+    $0 [--format <latex|html>] [--include <directory> [--include <directory>...]] [file [file...]]`)
+
   .alias('f', 'format')
   .describe('f', 'Specify output format: html or latex')
   .default('f', 'html')
   .options('f', ['html', 'latex'])
+
+  .alias('i', 'include')
+  .describe('i', 'Specify directory/directories to load class/race/background data from')
+
   .alias('h', 'help')
+
   .demand(1)
   .argv;
 
@@ -18,7 +24,9 @@ const loadCharacter = require('../src');
 
 argv._.forEach(function (filename) {
   console.log('Loading character %s', filename);
-  loadCharacter(filename)
+  loadCharacter(filename, {
+    includes: argv.include
+  })
   .then(function (character) {
     console.log('Character %s loaded', filename)
     return createOutput(filename, character);

@@ -1,47 +1,49 @@
 'use strict';
 
-module.exports = {
-  name: 'Dwarf',
+module.exports = function () {
+  return {
+    name: 'Dwarf',
 
-  proficiencies: {
-    languages: [
-      'Dwarvish',
-    ],
-
-    weapons: [
-      'Battleaxe',
-      'Handaxe',
-      'Light Hammer',
-      'Warhammer',
-    ],
-  },
-
-  builder: {
     proficiencies: {
-      tools: {
-        count: 1,
-        options: [
-          'Smith\'s Tools',
-          'Brewer\'s Supplies',
-          'Mason\'s Tools',
-        ],
-      }
-    },
-  },
+      languages: [
+        'Dwarvish',
+      ],
 
-  sub: {
-    hill: {
-      name: 'Hill Dwarf',
+      weapons: [
+        'Battleaxe',
+        'Handaxe',
+        'Light Hammer',
+        'Warhammer',
+      ],
     },
-    mountain: {
-      name: 'Mountain Dwarf',
 
+    builder: {
       proficiencies: {
-        armors: [
-          'Light Armor',
-          'Medium Armor',
-        ],
+        tools: {
+          count: 1,
+          options: [
+            'Smith\'s Tools',
+            'Brewer\'s Supplies',
+            'Mason\'s Tools',
+          ],
+        }
       },
     },
-  },
+
+    sub: {
+      hill: {
+        name: 'Hill Dwarf',
+      },
+      mountain: {
+        name: 'Mountain Dwarf',
+
+        proficiencies: {
+          armors: [
+            'Light Armor',
+            'Medium Armor',
+          ],
+        },
+      },
+    },
+  };
 };

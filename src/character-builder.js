@@ -1,6 +1,12 @@
 'use strict';
 
+const _ = require('lodash');
+
 const Character = require('./character');
+const Die = require('./Die');
+const ArrayUtils = require('./utils/array');
+
+const path = require('path');
 
 module.exports = CharacterBuilder;
 
@@ -57,8 +63,11 @@ const EMPTY_DATA = {
   equipment: []
 };
 
-function CharacterBuilder() {
+function CharacterBuilder(options) {
   this.data = Object.assign({}, EMPTY_DATA);
+
+  this.options = _.cloneDeep(options);
+  this.options.includes = ArrayUtils.ensureArray(this.options.includes);
 
   this.modifiers = {
     class: undefined,
@@ -71,8 +80,40 @@ function CharacterBuilder() {
 }
 
 CharacterBuilder.prototype = {
+  _resolve(p) {
+    try {
+      return require.resolve(p);
+    } catch (e) {}
+
+    let result;
+    let found = !!this.options.includes.find(function (include) {
+      try {
+        result = require.resolve(
+          path.resolve(process.cwd(), include, p)
+        );
+
+        return true;
+      } catch (e) {
+        return false;
+      }
+    });
+
+    if (found) {
+      return result;
+    }
+
+    throw new Error(`Cannot resolve ${p}`);
+  },
+
   createCharacter() {
-    return new Character(this.data);
+    return new Character(
+      Object.assign(
+        _.cloneDeep(this.data),
+        _.mapValues(this.modifiers, function (modifier) {
+          return modifier.data;
+        })
+      )
+    );
   },
 
   bindFunction(fn) {
@@ -330,7 +371,10 @@ CharacterBuilder.prototype = {
 };
 
 function CharacterModifier(type, name, builder) {
-  this.data = require('./' + type + '/' + name);
+  this.data = require(builder._resolve('./' + type + '/' + name))({
+    Character,
+    Die
+  });
   this.builder = builder;
   this.type = type;
   this.name = name;

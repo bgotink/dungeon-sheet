@@ -3,8 +3,8 @@
 const CharacterBuilder = require('./character-builder');
 const vm = require('./vm');
 
-module.exports = function createCharacter(filename) {
-  let builder = new CharacterBuilder();
+module.exports = function createCharacter(filename, options) {
+  let builder = new CharacterBuilder(options);
   let sandbox = vm.createContext(builder.getPublicApi());
 
   return vm.runFileInContext(filename, sandbox, {

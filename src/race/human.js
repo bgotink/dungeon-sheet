@@ -1,21 +1,21 @@
 'use strict';
 
-const Character = require('../character');
+module.exports = function () {
+  return {
+    name: 'Human',
 
-module.exports = {
-  name: 'Human',
-
-  proficiencies: {
-    languages: [],
-  },
-
-  builder: {
     proficiencies: {
-      languages: {
-        count: 1,
-      },
+      languages: [],
     },
-  }
 
-  // TODO: optional feat?
+    builder: {
+      proficiencies: {
+        languages: {
+          count: 1,
+        },
+      },
+    }
+
+    // TODO: optional feat?
+  };
 };

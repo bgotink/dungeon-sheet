@@ -12,9 +12,6 @@ function Character(data) {
   if (!(this instanceof Character)) return new Character(data);
 
   this.data = data;
-
-  this.classData = require(`./class/${data.class}`);
-  this.raceData = require(`./race/${data.race}`);
 }
 
 function createEnum() {
@@ -187,10 +184,10 @@ Character.prototype = {
     return this.data.level;
   },
   getRace() {
-    return this.raceData.name;
+    return this.data.race.name;
   },
   getClass() {
-    return this.classData.name;
+    return this.data.class.name;
   },
   getAlignment() {
     return this.data.alignment;
@@ -220,7 +217,7 @@ Character.prototype = {
     return this.data.inspiration;
   },
   getHitDie() {
-    return this.classData.hitDie.toString();
+    return this.data.class.hitDie.toString();
   },
 
   getStat(stat) {
@@ -241,7 +238,7 @@ Character.prototype = {
   },
 
   isSavingThrowProficient(stat) {
-    return this.classData.savingThrows.contains(stat);
+    return this.data.class.savingThrows.contains(stat);
   },
   getSavingThrow(stat) {
     const modifier = this.getStatModifierRaw(stat);

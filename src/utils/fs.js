@@ -2,16 +2,10 @@
 
 const fs = require('fs');
 
-function toArray(args) {
-  return Array.prototype.slice.apply(args);
-}
-
 function promisify(fn) {
-  fn = fs[fn];
-  return function () {
-    const args = toArray(arguments);
+  return function (...args) {
     return new Promise(function(resolve, reject) {
-      fn.apply(fs, args.concat([function (err, result) {
+      fs[fn](...args.concat([function (err, result) {
         if (err) {
           return reject(err);
         }
