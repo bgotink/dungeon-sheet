@@ -189,5 +189,5 @@ THE SOFTWARE.
 [basic-rules]: https://dnd.wizards.com/articles/features/basicrules
 [n]: https://www.npmjs.com/package/n
 [latex]: https://en.wikipedia.org/wiki/LaTeX
-[example-pdf]: https://example.com/pdf
-[example-html]: https://example.com/html
+[example-pdf]: https://github.com/bgotink/dungeon-sheet/blob/master/example/elrond.pdf
+[example-html]: http://htmlpreview.github.io/?https://raw.githubusercontent.com/bgotink/dungeon-sheet/master/example/elrond.html
