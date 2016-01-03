@@ -20,14 +20,14 @@ if (!vm.runFileInContext) {
           filename
         }));
       } catch (e) {
-        var stack = e.stack.split("\n");
-        var msg = stack.splice(0, 1);
-
-        e.stack = msg.concat(
-          stack.filter(function (line) {
-            return line.match(filename);
-          })
-        ).join("\n");
+        // var stack = e.stack.split("\n");
+        // var msg = stack.splice(0, 1);
+        //
+        // e.stack = msg.concat(
+        //   stack.filter(function (line) {
+        //     return line.match(filename);
+        //   })
+        // ).join("\n");
 
         throw e;
       }
