@@ -2,6 +2,13 @@
   "name": "dungeon-sheet",
   "version": "0.1.1",
   "description": "",
+  "keywords": [
+    "dungeons and dragons",
+    "dungeons",
+    "dragons",
+    "dnd",
+    "character sheet"
+  ],
   "main": "src/index.js",
   "bin": {
     "dungeon-sheet": "bin/dungeon-sheet.js"
