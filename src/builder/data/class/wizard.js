@@ -1,8 +1,5 @@
 'use strict';
 
-const Die = require('../die');
-const Character = require('../character');
-
 module.exports = function ({ Character, Die }) {
   return {
     name: 'Wizard',

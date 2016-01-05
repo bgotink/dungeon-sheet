@@ -29,7 +29,7 @@ function CharacterBuilder(options) {
 
   this.options = _.cloneDeep(options);
   this.options.includes = ArrayUtils.ensureArray(this.options.includes);
-  this.options.includes.push(path.join(__dirname, '..'));
+  this.options.includes.push(path.join(__dirname, 'data'));
 
   this.modifiers = {
     class: undefined,
