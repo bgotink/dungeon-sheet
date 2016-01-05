@@ -1,7 +1,7 @@
 'use strict';
 
-const AbstractValue = require('./values/abstract');
-const Character = require('../character');
+const AbstractValue = require('./types/abstract');
+const Character = require('../../character');
 
 class LevelAndExperienceValue extends AbstractValue {
   constructor() {

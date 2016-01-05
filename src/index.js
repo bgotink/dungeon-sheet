@@ -1,6 +1,6 @@
 'use strict';
 
-const CharacterBuilder = require('./character-builder');
+const CharacterBuilder = require('./builder');
 const vm = require('./vm');
 
 module.exports = function createCharacter(filename, options) {

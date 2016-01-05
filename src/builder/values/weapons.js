@@ -1,6 +1,6 @@
 'use strict';
 
-const AbstractValue = require('./values/abstract');
+const AbstractValue = require('./types/abstract');
 
 class WeaponsValue extends AbstractValue {
   constructor() {

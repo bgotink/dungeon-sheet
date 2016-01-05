@@ -1,9 +1,9 @@
 'use strict';
 
-const AbstractValue = require('./values/abstract');
+const AbstractValue = require('./types/abstract');
 
-const Character = require('../character');
-const Die = require('../die');
+const Character = require('../../character');
+const Die = require('../../die');
 
 module.exports = class CharacterModifier extends AbstractValue {
   constructor(builder) {

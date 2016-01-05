@@ -2,28 +2,15 @@
 
 const _ = require('lodash');
 
-const Character = require('./character');
-const Die = require('./Die');
-const ArrayUtils = require('./utils/array');
+const Character = require('../character');
+const Die = require('../Die');
+const ArrayUtils = require('../utils/array');
 
 const path = require('path');
 
 module.exports = CharacterBuilder;
 
-const Values = (function () {
-  const { string, boolean, number, Simple } = require('./builder/values/simple');
-  const { array, set: _set } = require('./builder/values/collection');
-  const { Object } = require('./builder/values/object');
-
-  const level = require('./builder/level');
-  const weapons = require('./builder/weapons');
-  const Modifier = require('./builder/modifier');
-
-  return {
-    Object, string, boolean, number, array, set: _set, Simple, level, weapons,
-    Modifier,
-  };
-})();
+const values = require('./values');
 
 function CharacterBuilder(options) {
   this.data = {
@@ -42,7 +29,7 @@ function CharacterBuilder(options) {
 
   this.options = _.cloneDeep(options);
   this.options.includes = ArrayUtils.ensureArray(this.options.includes);
-  this.options.includes.push(__dirname);
+  this.options.includes.push(path.join(__dirname, '..'));
 
   this.modifiers = {
     class: undefined,
@@ -112,49 +99,49 @@ CharacterBuilder.prototype = {
     const api = {};
 
     [ 'name', 'alignment', 'playerName' ].forEach(
-      Values.string.register.bind(Values.string, api, builder.data)
+      values.types.string.register.bind(values.types.string, api, builder.data)
     );
 
     [ 'inspiration' ].forEach(
-      Values.boolean.register.bind(Values.boolean, api, builder.data)
+      values.types.boolean.register.bind(values.types.boolean, api, builder.data)
     );
 
     [ 'hp', 'speed' ].forEach(
-      Values.number.register.bind(Values.number, api, builder.data)
+      values.types.number.register.bind(values.types.number, api, builder.data)
     );
 
-    Values.level.register(api, builder.data);
+    values.level.register(api, builder.data);
 
     [ 'class', 'race', 'background' ].forEach(function (modifierType) {
-      const modifier = new Values.Modifier(builder);
+      const modifier = new values.Modifier(builder);
       modifier.register(api, modifierType);
       builder.modifiers[modifierType] = modifier;
     });
 
-    const stats = new Values.Object();
+    const stats = new values.types.Object();
     Object.keys(Character.stats).forEach(function (stat) {
-      stats.addField(stat, Values.number);
+      stats.addField(stat, values.types.number);
     });
     stats.freezeKeys();
     stats.register(api, builder.data, 'stats');
 
-    const ac = new Values.Object();
+    const ac = new values.types.Object();
     [ 'armor', 'shield', 'magic' ].forEach(function (acType) {
-      ac.addField(acType, Values.number);
+      ac.addField(acType, values.types.number);
     });
     ac.freezeKeys();
     ac.register(api, builder.data, 'ac');
 
-    Values.weapons.register(api, builder.data);
+    values.weapons.register(api, builder.data);
 
-    const treasure = new Values.Object();
+    const treasure = new values.types.Object();
     Character.coins.forEach(function (coin) {
-      treasure.addField(coin, Values.number);
+      treasure.addField(coin, values.types.number);
     });
-    treasure.addField('items', Values.array);
+    treasure.addField('items', values.types.array);
     treasure.register(api, builder.data, 'treasure');
 
-    Values.array.register(api, builder.data, 'equipment');
+    values.types.array.register(api, builder.data, 'equipment');
 
     return api;
   }
