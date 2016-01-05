@@ -5,6 +5,8 @@ const AbstractValue = require('./types/abstract');
 const Character = require('../../character');
 const Die = require('../../die');
 
+const { contains } = require('../../utils/array');
+
 module.exports = class CharacterModifier extends AbstractValue {
   constructor(builder) {
     super();
@@ -161,7 +163,7 @@ ModifierApi.prototype.getData = function () {
         throw new Error(`Maximum number of ${this.type} ${proficiencyTypeName} proficiencies reached`);
       }
 
-      if (options !== undefined && !options.contains(value)) {
+      if (options !== undefined && !contains(options, value)) {
         throw new Error(`Invalid ${proficiencyTypeName} proficiency for ${this.type} ${this.name}, valid types are: ${options.join(', ')}`);
       }
 

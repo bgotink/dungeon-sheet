@@ -1,11 +1,6 @@
 'use strict';
 
-if (!Array.prototype.contains) {
-  Array.prototype.contains = function (el) {
-    return ~this.indexOf(el);
-  }
-}
-
+const { contains } = require('./utils/array');
 const constants = require('./constants');
 
 module.exports = Character;
@@ -32,11 +27,7 @@ function mergeArrays() {
 
   Array.prototype.forEach.call(arguments, function (arr) {
     arr.forEach(function (el) {
-      if (!result || !result.contains) {
-        return;
-      }
-
-      if (!result.contains(el)) {
+      if (el && !contains(result, el)) {
         result.push(el);
       }
     });
@@ -121,7 +112,7 @@ Character.prototype = {
   },
 
   isSavingThrowProficient(stat) {
-    return this.data.class.savingThrows.contains(stat);
+    return contains(this.data.class.savingThrows, stat);
   },
   getSavingThrow(stat) {
     const modifier = this.getStatModifierRaw(stat);
