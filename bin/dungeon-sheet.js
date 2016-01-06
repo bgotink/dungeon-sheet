@@ -4,7 +4,7 @@
 const argv = require('yargs')
   .usage(`Usage:
     $0 --help
-    $0 [--format <latex|html>] [--include <directory> [--include <directory>...]] [file [file...]]`)
+    $0 [--verbose] [--format <latex|html>] [--include <directory> [--include <directory>...]] [file [file...]]`)
 
   .alias('f', 'format')
   .describe('f', 'Specify output format: html or pdf')
@@ -16,26 +16,35 @@ const argv = require('yargs')
 
   .alias('h', 'help')
 
+  .alias('v', 'verbose')
+  .describe('v', 'increase logging output')
+  .count('v')
+
   .demand(1)
   .argv;
+
+const Logger = require('../src/utils/logger');
+Logger.init(argv.verbose);
+
+const logger = Logger.getLogger(__filename);
 
 const createOutput = require(`../src/output/${argv.format}`);
 const loadCharacter = require('../src');
 
 argv._.forEach(function (filename) {
-  console.log('Loading character %s', filename);
+  logger.info('Loading character %s', filename);
   loadCharacter(filename, {
     includes: argv.include
   })
   .then(function (character) {
-    console.log('Character %s loaded', filename);
+    logger.info('Character %s loaded', filename);
     return createOutput(filename, character);
   })
   .then(function (outputFile) {
-    console.log('Character %s written to file %s', filename, outputFile);
+    logger.info('Character %s written to file %s', filename, outputFile);
   })
   .catch(function (err) {
-    console.error('Character %s error:', filename);
-    console.error(err && err.stack ? err.stack : err);
+    logger.error('Character %s error:', filename);
+    logger.error(err && err.stack ? err.stack : err);
   });
 });

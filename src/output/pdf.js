@@ -5,6 +5,8 @@ const fs = require('../utils/fs');
 const path = require('path');
 const _ = require('lodash');
 
+const logger = require('../utils/logger').getLogger(__filename);
+
 const TEX_DIRECTORY = path.resolve(__dirname, '../../lib/tex');
 
 const TEX_MAIN_FILE = path.join(TEX_DIRECTORY, 'template.tex-template');
@@ -37,7 +39,7 @@ module.exports = function formatPDF(filename, character) {
   })
   .then(function (latexSource) {
     const outputFilename = filename.replace(/(\.character)$/, '.pdf');
-    console.log('Typesetting file %s', outputFilename);
+    logger.info('Typesetting file %s', outputFilename);
 
     return fs.writeStreamToFile(
       outputFilename,
