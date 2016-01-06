@@ -4,7 +4,6 @@ const _ = require('lodash');
 const path = require('path');
 
 const Character = require('../character');
-const Die = require('../Die');
 const { ensureArray } = require('../utils/array');
 const values = require('./values');
 
@@ -141,4 +140,4 @@ module.exports = class CharacterBuilder {
 
     return api;
   }
-}
+};

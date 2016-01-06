@@ -32,5 +32,5 @@ if (!vm.runFileInContext) {
         throw e;
       }
     });
-  }
+  };
 }

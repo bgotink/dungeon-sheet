@@ -10,4 +10,4 @@ exports.ensureArray = function (obj) {
 
 exports.contains = function (array, element) {
   return !!~array.indexOf(element);
-}
+};

@@ -8,7 +8,7 @@ const _ = require('lodash');
 const JADE_MAIN_FILE = path.resolve(__dirname, '../../lib/html/main.jade');
 
 const getRenderFunction = _.once(function createRenderFunction() {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     const jadeRender = jade.compileFile(JADE_MAIN_FILE, {
       pretty: true
     });
@@ -28,6 +28,6 @@ module.exports = function formatHTML(filename, character) {
     const outputFilename = filename.replace(/(\.character)$/, '.html');
 
     return fs.writeFile(outputFilename, html)
-    .then(_ => outputFilename);
+    .then(() => outputFilename);
   });
 };

@@ -42,6 +42,6 @@ module.exports = function formatPDF(filename, character) {
     return fs.writeStreamToFile(
       outputFilename,
       latex(latexSource, TEX_OPTIONS)
-    ).then(_ => outputFilename);
+    ).then(() => outputFilename);
   });
 };

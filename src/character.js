@@ -2,14 +2,6 @@
 
 const { contains } = require('./utils/array');
 const constants = require('./constants');
-const _ = require('lodash');
-
-function mergeArrays(...arrays) {
-  return _(arrays)
-    .flatten()
-    .filter()
-    .value();
-}
 
 function modifierToString(modifier, forcePlusIfZero) {
   if (modifier > 0) {

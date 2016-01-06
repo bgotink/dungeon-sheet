@@ -1,7 +1,6 @@
 'use strict';
 
 const AbstractValue = require('./abstract');
-const { Simple: SimpleValue } = require('./simple');
 
 exports.Object = class ObjectValue extends AbstractValue {
   constructor() {

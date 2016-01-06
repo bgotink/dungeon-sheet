@@ -13,7 +13,7 @@ function promisify(fn) {
         resolve(result);
       }]));
     });
-  }
+  };
 }
 
 ['readFile', 'writeFile'].forEach(function (fn) {

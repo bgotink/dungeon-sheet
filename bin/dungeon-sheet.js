@@ -28,7 +28,7 @@ argv._.forEach(function (filename) {
     includes: argv.include
   })
   .then(function (character) {
-    console.log('Character %s loaded', filename)
+    console.log('Character %s loaded', filename);
     return createOutput(filename, character);
   })
   .then(function (outputFile) {

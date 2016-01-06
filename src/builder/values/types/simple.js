@@ -54,4 +54,4 @@ exports.number = new SimpleValue(undefined, function (value) {
 
 exports.boolean = new SimpleValue(undefined, function (value) {
   return typeof value === 'boolean';
-})
+});

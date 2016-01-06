@@ -48,7 +48,7 @@ module.exports = class CharacterModifier extends AbstractValue {
       get: this.getApi.bind(this, key),
     });
   }
-}
+};
 
 function ModifierApi(type, name, builder) {
   this.data = require(builder._resolve('./' + type + '/' + name))({
@@ -129,7 +129,7 @@ function ModifierApi(type, name, builder) {
           }
         });
       }
-    }
+    };
   }
 }
 
