@@ -1,47 +1,43 @@
 'use strict';
 
 const _ = require('lodash');
+const path = require('path');
 
 const Character = require('../character');
 const Die = require('../Die');
-const ArrayUtils = require('../utils/array');
-
-const path = require('path');
-
-module.exports = CharacterBuilder;
-
+const { ensureArray } = require('../utils/array');
 const values = require('./values');
 
-function CharacterBuilder(options) {
-  this.data = {
-    proficiencies: {
-      skills: {},
+module.exports = class CharacterBuilder {
+  constructor(options) {
+    this.data = {
+      proficiencies: {
+        skills: {},
 
-      languages: {
-        'Common': true
+        languages: {
+          'Common': true
+        },
+
+        other: []
       },
 
-      other: []
-    },
+      weapons: [],
+    };
 
-    weapons: [],
-  };
+    this.options = _.cloneDeep(options);
+    this.options.includes = ensureArray(this.options.includes);
+    this.options.includes.push(path.join(__dirname, 'data'));
 
-  this.options = _.cloneDeep(options);
-  this.options.includes = ArrayUtils.ensureArray(this.options.includes);
-  this.options.includes.push(path.join(__dirname, 'data'));
+    this.modifiers = {
+      class: undefined,
+      race: undefined,
+      background: undefined
+    };
 
-  this.modifiers = {
-    class: undefined,
-    race: undefined,
-    background: undefined
-  };
+    this.experienceSet = false;
+    this.levelSet = false;
+  }
 
-  this.experienceSet = false;
-  this.levelSet = false;
-}
-
-CharacterBuilder.prototype = {
   _resolve(p) {
     let result;
     let found = !!this.options.includes.find(function (include) {
@@ -61,7 +57,7 @@ CharacterBuilder.prototype = {
     }
 
     throw new Error(`Cannot resolve ${p}`);
-  },
+  }
 
   createCharacter() {
     return new Character(
@@ -72,7 +68,7 @@ CharacterBuilder.prototype = {
         })
       )
     );
-  },
+  }
 
   isProficient(proficiencyType, value) {
     if (!this.data.proficiencies[proficiencyType]) {
@@ -80,7 +76,7 @@ CharacterBuilder.prototype = {
     }
 
     return !!this.data.proficiencies[proficiencyType][value];
-  },
+  }
 
   makeProficient(proficiencyType, value) {
     if (this.isProficient(proficiencyType, value)) {
@@ -92,7 +88,7 @@ CharacterBuilder.prototype = {
     }
 
     this.data.proficiencies[proficiencyType][value] = true;
-  },
+  }
 
   getPublicApi() {
     const builder = this;
@@ -145,4 +141,4 @@ CharacterBuilder.prototype = {
 
     return api;
   }
-};
+}
