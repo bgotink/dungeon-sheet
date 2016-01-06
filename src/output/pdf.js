@@ -23,6 +23,8 @@ const TEX_OPTIONS = Object.freeze({
 });
 
 const readTemplate = _.once(function readTemplate() {
+  logger.trace('Creating tex typeset function');
+
   return fs.readFile(TEX_MAIN_FILE)
   .then(function (template) {
     return _.template(template, TEMPLATE_OPTIONS);
@@ -32,6 +34,8 @@ const readTemplate = _.once(function readTemplate() {
 module.exports = function formatPDF(filename, character) {
   return readTemplate()
   .then(function (template) {
+    logger.trace('Creating main tex source for character %s', filename);
+
     return template({
       character,
       includeDirectory: TEX_INCLUDE_DIRECTORY,

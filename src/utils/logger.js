@@ -19,6 +19,7 @@ exports.init = function (verbose) {
         }
       ],
     });
+    log4js.setGlobalLogLevel('TRACE');
   } else {
     log4js.configure({
       appenders: [
@@ -30,6 +31,7 @@ exports.init = function (verbose) {
         }
       ],
     });
+    log4js.setGlobalLogLevel('INFO');
   }
 };
 
@@ -64,7 +66,12 @@ function createLogFunctions(logger) {
           //   logger[level](util.format(format, ...args), throwable);
           // it works in Node 5 though... and it works when split like below:
           const res = util.format(format, ...args);
-          logger[level](res, throwable);
+
+          if (throwable) {
+            logger[level](res, throwable);
+          } else {
+            logger[level](res);
+          }
         }
       },
     };
