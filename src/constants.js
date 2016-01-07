@@ -84,6 +84,10 @@ const minLevel = exports.minimumLevel = 1;
 const maxLevel = exports.maximumLevel = 20;
 
 exports.experienceToLevel = function experienceToLevel(experience) {
+  if (isNaN(experience) || experience < 0) {
+    throw new Error(`Invalid experience ${experience}, should be a non-negative number`);
+  }
+
   let level = experienceRequirements.findIndex(function (requirement) {
     return requirement > experience;
   });
@@ -96,8 +100,8 @@ exports.experienceToLevel = function experienceToLevel(experience) {
 };
 
 exports.levelToExperience = function levelToExperience(level) {
-  if (level < minLevel || level > maxLevel) {
-    throw new Error(`Invalid level ${level}, levels should be between ${minLevel} and ${maxLevel}`);
+  if (isNaN(level) || level < minLevel || level > maxLevel) {
+    throw new Error(`Invalid level ${level}, levels should be numbers between ${minLevel} and ${maxLevel}`);
   }
 
   return experienceRequirements[level - 1];

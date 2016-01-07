@@ -26,14 +26,14 @@ if (!vm.runFileInContext) {
       } catch (e) {
         logger.trace('Got error while reading %s', filename, e);
 
-        var stack = e.stack.split("\n");
+        var stack = e.stack.split('\n');
         var msg = stack.splice(0, 1);
 
         e.stack = msg.concat(
           stack.filter(function (line) {
             return line.match(filename);
           })
-        ).join("\n");
+        ).join('\n');
 
         throw e;
       }

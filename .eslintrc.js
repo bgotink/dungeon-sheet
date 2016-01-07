@@ -1,4 +1,8 @@
 module.exports = {
+    "globals": {
+        "describe": true,
+        "it": true
+    },
     "rules": {
         "indent": [
             2,
