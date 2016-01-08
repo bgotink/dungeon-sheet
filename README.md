@@ -1,4 +1,4 @@
-# dungeon-sheet
+# dungeon-sheet [![build status](https://travis-ci.org/bgotink/dungeon-sheet.svg)][travis]
 
 A tool for creating Dungeons and Dragons&reg; 5<sup>th</sup> edition character sheets.
 
@@ -185,6 +185,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
+[travis]: https://travis-ci.org/bgotink/dungeon-sheet.svg)](https://travis-ci.org/bgotink/dungeon-sheet
 [npm]: https://www.npmjs.com/package/dungeon-sheet
 [basic-rules]: https://dnd.wizards.com/articles/features/basicrules
 [n]: https://www.npmjs.com/package/n
