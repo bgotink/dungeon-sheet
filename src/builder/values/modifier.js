@@ -121,38 +121,9 @@ function ModifierApi(type, name, builder) {
   };
 }
 
-ModifierApi.prototype._getModifierData = function (name) {
-  return require(this.builder._resolve(this.type, name))({
-    Character,
-    Die
-  });
-};
-
-ModifierApi.prototype._getSubData = function (sub) {
-  // try to load the sub-modifier from the modifier data
-  if (sub in this.data.sub) {
-    return this.data.sub[sub];
-  }
-
-  // perhaps the sub-modifier was defined externally?
-  try {
-    return this._getModifierData(`${this.name}-${sub}`);
-  } catch (e) {
-    throw new Error(`Unknown sub${this.type} for ${this.name}: ${sub}`);
-  }
-};
-
-ModifierApi.prototype.getData = function () {
-  if (this.data.subRequired && !this.set.sub) {
-    throw new Error(`Character sub${this.type} hasn't been set`);
-  }
-
-  return this.data;
-};
-
-(function () {
-  function createSelectProficiencyFunction(name, proficiencyTypeName, proficiencyType, counter) {
-    ModifierApi.prototype[name] = function (value) {
+ModifierApi.prototype = (function () {
+  function createSelectProficiencyFunction(proficiencyTypeName, proficiencyType, counter) {
+    return function selectProficiency(value) {
       if (
           !this.data.builder
           || !this.data.builder.proficiencies
@@ -183,7 +154,38 @@ ModifierApi.prototype.getData = function () {
     };
   }
 
-  createSelectProficiencyFunction('selectSkill', 'skill', 'skills', 'selectedSkills');
-  createSelectProficiencyFunction('selectLanguage', 'language', 'languages', 'selectedLanguages');
-  createSelectProficiencyFunction('selectTool', 'tool', 'tools', 'selectedTools');
+  return {
+    _getModifierData(name) {
+      return require(this.builder._resolve(this.type, name))({
+        Character,
+        Die
+      });
+    },
+
+    _getSubData(sub) {
+      // try to load the sub-modifier from the modifier data
+      if (sub in this.data.sub) {
+        return this.data.sub[sub];
+      }
+
+      // perhaps the sub-modifier was defined externally?
+      try {
+        return this._getModifierData(`${this.name}-${sub}`);
+      } catch (e) {
+        throw new Error(`Unknown sub${this.type} for ${this.name}: ${sub}`);
+      }
+    },
+
+    getData() {
+      if (this.data.subRequired && !this.set.sub) {
+        throw new Error(`Character sub${this.type} hasn't been set`);
+      }
+
+      return this.data;
+    },
+
+    selectSkill: createSelectProficiencyFunction('skill', 'skills', 'selectedSkills'),
+    selectLanguage: createSelectProficiencyFunction('language', 'languages', 'selectedLanguages'),
+    selectTool: createSelectProficiencyFunction('tool', 'tools', 'selectedTools')
+  };
 })();
