@@ -1,11 +1,11 @@
 'use strict';
 
 const _ = require('lodash');
-const path = require('path');
 
 const Character = require('../character');
 const { ensureArray } = require('../utils/array');
 const values = require('./values');
+const ModifierResolver = require('./modifier-resolver');
 
 module.exports = class CharacterBuilder {
   constructor(options) {
@@ -23,9 +23,7 @@ module.exports = class CharacterBuilder {
       weapons: [],
     };
 
-    this.options = _.cloneDeep(options);
-    this.options.includes = ensureArray(this.options.includes);
-    this.options.includes.push(path.join(__dirname, 'data'));
+    this._modifierResolver = new ModifierResolver(ensureArray(options.includes));
 
     this.modifiers = {
       class: undefined,
@@ -37,25 +35,8 @@ module.exports = class CharacterBuilder {
     this.levelSet = false;
   }
 
-  _resolve(p) {
-    let result;
-    let found = !!this.options.includes.find(function (include) {
-      try {
-        result = require.resolve(
-          path.resolve(process.cwd(), include, p)
-        );
-
-        return true;
-      } catch (e) {
-        return false;
-      }
-    });
-
-    if (found) {
-      return result;
-    }
-
-    throw new Error(`Cannot resolve ${p}`);
+  _resolve(type, name) {
+    return this._modifierResolver.resolve(type, name);
   }
 
   createCharacter() {

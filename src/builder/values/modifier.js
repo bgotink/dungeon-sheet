@@ -51,7 +51,7 @@ module.exports = class CharacterModifier extends AbstractValue {
 };
 
 function ModifierApi(type, name, builder) {
-  this.data = require(builder._resolve('./' + type + '/' + name))({
+  this.data = require(builder._resolve(type, name))({
     Character,
     Die
   });
