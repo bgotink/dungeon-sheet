@@ -14,6 +14,7 @@ module.exports = function ({ Character }) {
       ],
     },
 
+    subRequired: true,
     sub: {
       wood: {
         name: 'Wood Elf',

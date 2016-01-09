@@ -63,7 +63,7 @@ function ModifierApi(type, name, builder) {
   };
 
   this.set = {
-    sub: true,
+    sub: false,
   };
 
   function makeProficient(proficiencyType) {
@@ -81,48 +81,44 @@ function ModifierApi(type, name, builder) {
     });
   }
 
-  if (this.data.sub) {
-    this.set.sub = false;
+  this[`selectSub${type.charAt(0).toUpperCase()}${type.slice(1)}`] = function (sub) {
+    if (this.set.sub) {
+      throw new Error(`Character sub${type} already set, cannot be overridden`);
+    }
+    this.set.sub = true;
 
-    this[`selectSub${type.charAt(0).toUpperCase()}${type.slice(1)}`] = function (sub) {
-      if (this.set.sub) {
-        throw new Error(`Character sub${type} already set, cannot be overridden`);
-      }
-      this.set.sub = true;
+    sub = this._getSubData(sub);
 
-      sub = this._getSubData(sub);
+    if (sub.name) {
+      this.data.name = sub.name;
+    }
 
-      if (sub.name) {
-        this.data.name = sub.name;
-      }
+    if (sub.proficiencies) {
+      [ 'skills', 'languages', 'armors', 'weapons', 'tools', 'others' ]
+      .forEach(function (proficiencyType) {
+        if (sub.proficiencies[proficiencyType]) {
+          sub.proficiencies[proficiencyType].forEach(makeProficient(proficiencyType));
+        }
+      });
+    }
 
-      if (sub.proficiencies) {
-        [ 'skills', 'languages', 'armors', 'weapons', 'tools', 'others' ]
-        .forEach(function (proficiencyType) {
-          if (sub.proficiencies[proficiencyType]) {
-            sub.proficiencies[proficiencyType].forEach(makeProficient(proficiencyType));
+    if (sub.builder && sub.builder.proficiencies && Object.keys(sub.builder.proficiencies).length) {
+      const builder = (this.data.builder || (this.data.builder = {}));
+      builder.proficiencies = builder.proficiencies || {};
+
+      [ 'skills', 'languages', 'armors', 'weapons', 'tools', 'others' ]
+      .forEach(function (proficiencyType) {
+        if (sub.builder.proficiencies[proficiencyType]) {
+          if (!builder.proficiencies[proficiencyType]) {
+            builder.proficiencies[proficiencyType] = sub.builder.proficiencies[proficiencyType];
+          } else {
+            // TODO what to do if there's a race proficiency with some options
+            // and a subrace proficiency of the same type with other options?
           }
-        });
-      }
-
-      if (sub.builder && sub.builder.proficiencies && Object.keys(sub.builder.proficiencies).length) {
-        const builder = (this.data.builder || (this.data.builder = {}));
-        builder.proficiencies = builder.proficiencies || {};
-
-        [ 'skills', 'languages', 'armors', 'weapons', 'tools', 'others' ]
-        .forEach(function (proficiencyType) {
-          if (sub.builder.proficiencies[proficiencyType]) {
-            if (!builder.proficiencies[proficiencyType]) {
-              builder.proficiencies[proficiencyType] = sub.builder.proficiencies[proficiencyType];
-            } else {
-              // TODO what to do if there's a race proficiency with some options
-              // and a subrace proficiency of the same type with other options?
-            }
-          }
-        });
-      }
-    };
-  }
+        }
+      });
+    }
+  };
 }
 
 ModifierApi.prototype._getModifierData = function (name) {
@@ -147,7 +143,7 @@ ModifierApi.prototype._getSubData = function (sub) {
 };
 
 ModifierApi.prototype.getData = function () {
-  if (!this.set.sub) {
+  if (this.data.subRequired && !this.set.sub) {
     throw new Error(`Character sub${this.type} hasn't been set`);
   }
 

@@ -30,6 +30,7 @@ module.exports = function () {
       },
     },
 
+    subRequired: true,
     sub: {
       hill: {
         name: 'Hill Dwarf',

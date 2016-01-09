@@ -14,6 +14,7 @@ module.exports = function () {
       proficiencies: {},
     },
 
+    subRequired: true,
     sub: {
       lightfoot: {
         name: 'Lightfoot Halfling',
