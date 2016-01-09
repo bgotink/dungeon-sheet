@@ -96,7 +96,6 @@ function ModifierApi(type, name, builder) {
         throw new Error(`Character sub${type} already set, cannot be overridden`);
       }
       this.set.sub = true;
-      this.__init = true;
 
       sub = this.data.sub[sub];
 
