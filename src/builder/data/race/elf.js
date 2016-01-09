@@ -15,27 +15,6 @@ module.exports = function ({ Character }) {
     },
 
     sub: {
-      high: {
-        name: 'High Elf',
-
-        proficiencies: {
-          weapons: [
-            'Longsword',
-            'Shortsword',
-            'Shortbow',
-            'Longbow',
-          ],
-        },
-
-        builder: {
-          proficiencies: {
-            languages: {
-              count: 1,
-            },
-          },
-        },
-      },
-
       wood: {
         name: 'Wood Elf',
 

@@ -7,3 +7,6 @@
 !elf.js
 !halfling.js
 !human.js
+
+# subrace with the alternative out-of-file definition
+!elf-high.js

@@ -51,12 +51,9 @@ module.exports = class CharacterModifier extends AbstractValue {
 };
 
 function ModifierApi(type, name, builder) {
-  this.data = require(builder._resolve(type, name))({
-    Character,
-    Die
-  });
   this.builder = builder;
   this.type = type;
+  this.data = this._getModifierData(name);
   this.name = name;
 
   this.counters = {
@@ -88,16 +85,12 @@ function ModifierApi(type, name, builder) {
     this.set.sub = false;
 
     this[`selectSub${type.charAt(0).toUpperCase()}${type.slice(1)}`] = function (sub) {
-      if (!this.data.sub.hasOwnProperty(sub)) {
-        throw new Error(`Unknown sub${type} for ${name}: ${sub}`);
-      }
-
       if (this.set.sub) {
         throw new Error(`Character sub${type} already set, cannot be overridden`);
       }
       this.set.sub = true;
 
-      sub = this.data.sub[sub];
+      sub = this._getSubData(sub);
 
       if (sub.name) {
         this.data.name = sub.name;
@@ -131,6 +124,27 @@ function ModifierApi(type, name, builder) {
     };
   }
 }
+
+ModifierApi.prototype._getModifierData = function (name) {
+  return require(this.builder._resolve(this.type, name))({
+    Character,
+    Die
+  });
+};
+
+ModifierApi.prototype._getSubData = function (sub) {
+  // try to load the sub-modifier from the modifier data
+  if (sub in this.data.sub) {
+    return this.data.sub[sub];
+  }
+
+  // perhaps the sub-modifier was defined externally?
+  try {
+    return this._getModifierData(`${this.name}-${sub}`);
+  } catch (e) {
+    throw new Error(`Unknown sub${this.type} for ${this.name}: ${sub}`);
+  }
+};
 
 ModifierApi.prototype.getData = function () {
   if (!this.set.sub) {
