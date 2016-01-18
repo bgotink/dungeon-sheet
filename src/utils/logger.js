@@ -35,14 +35,19 @@ exports.init = function (verbose) {
   }
 };
 
-exports.getLogger = function (filename) {
-  filename = path.relative(PROJECT_ROOT, filename);
-  const logger = log4js.getLogger(filename);
+function getLoggerForName(name) {
+  const logger = log4js.getLogger(name);
 
   return Object.create(
     logger, // use the real logger as prototype
     createLogFunctions(logger)
   );
+}
+
+exports.getLoggerRaw = getLoggerForName;
+
+exports.getLogger = function (filename) {
+  return getLoggerForName(path.relative(PROJECT_ROOT, filename));
 };
 
 function createLogFunctions(logger) {

@@ -4,6 +4,8 @@ experience = '6500';
 alignment = 'Lawful Good';
 inspiration = false;
 
+log(`Character ${name}, level ${level}`);
+
 hp = 25;
 speed = 30;
 

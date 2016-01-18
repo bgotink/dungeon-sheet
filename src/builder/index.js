@@ -6,6 +6,7 @@ const Character = require('../character');
 const { ensureArray } = require('../utils/array');
 const values = require('./values');
 const ModifierResolver = require('./modifier-resolver');
+const createEmptyApi = require('./api-factory');
 
 module.exports = class CharacterBuilder {
   constructor(options) {
@@ -72,7 +73,7 @@ module.exports = class CharacterBuilder {
 
   getPublicApi() {
     const builder = this;
-    const api = {};
+    const api = createEmptyApi();
 
     [ 'name', 'alignment', 'playerName' ].forEach(
       values.types.string.register.bind(values.types.string, api, builder.data)
