@@ -4,7 +4,7 @@
 const argv = require('yargs')
   .usage(`Usage:
     $0 --help
-    $0 [--verbose] [--format <latex|html>] [--include <directory> [--include <directory>...]] [file [file...]]`)
+    $0 [--verbose] [--format <pdf|html>] [--include <directory> [--include <directory>...]] [file [file...]]`)
 
   .alias('f', 'format')
   .describe('f', 'Specify output format: html or pdf')
