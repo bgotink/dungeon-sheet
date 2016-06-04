@@ -29,6 +29,7 @@ Logger.init(argv.verbose);
 const logger = Logger.getLogger(__filename);
 
 const loadCharacter = require('../src');
+const identity = arg => arg;
 
 const createOutput = (() => {
   try {
@@ -39,20 +40,31 @@ const createOutput = (() => {
   }
 })();
 
-argv._.forEach(function (filename) {
+Promise.all(argv._.map(filename => {
   logger.info('Loading character %s', filename);
-  loadCharacter(filename, {
+
+  return loadCharacter(filename, {
     includes: argv.include
   })
-  .then(function (character) {
+  .then(character => {
     logger.info('Character %s loaded', filename);
     return createOutput(filename, character);
   })
-  .then(function (outputFile) {
+  .then(outputFile => {
     logger.info('Character %s written to file %s', filename, outputFile);
-  })
-  .catch(function (err) {
+    return true;
+  }, err => {
     logger.error('Character %s error:', filename);
-    logger.error(err && err.stack ? err.stack : err);
+    if (argv.verbose) {
+      logger.error(err && err.stack ? err.stack : err);
+    } else {
+      logger.error(err && err.message ? err.message : err);
+    }
+    return false;
   });
+}))
+.then(results => {
+  if (!results.every(identity)) {
+    process.exit(1);
+  }
 });
