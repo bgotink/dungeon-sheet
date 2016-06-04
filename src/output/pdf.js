@@ -4,6 +4,25 @@ const latex = require('latex');
 const fs = require('../utils/fs');
 const path = require('path');
 const _ = require('lodash');
+const which = (function (_which) {
+  return function which(name, options) {
+    return new Promise(function(resolve, reject) {
+      const cb = (err, path) => {
+        if (err) {
+          return reject(err);
+        }
+
+        resolve(path);
+      };
+
+      if (options != undefined) {
+        _which(name, options, cb);
+      } else {
+        _which(name, cb);
+      }
+    });
+  }
+})(require('which'));
 
 const logger = require('../utils/logger').getLogger(__filename);
 
@@ -18,8 +37,15 @@ const TEMPLATE_OPTIONS = Object.freeze({
   interpolate: /<\{=([\s\S]+?)\}>/g,
 });
 
-const TEX_OPTIONS = Object.freeze({
-  format: 'pdf',
+const TEX_OPTIONS = which('pdflatex').catch(() => {
+  return which('pdflatex', {
+    path: '/Library/TeX/texbin:/usr/texbin'
+  });
+}).then((command) => {
+  return Object.freeze({
+    command,
+    format: 'pdf',
+  });
 });
 
 const readTemplate = _.once(function readTemplate() {
@@ -45,9 +71,11 @@ module.exports = function formatPDF(filename, character) {
     const outputFilename = filename.replace(/(\.character)$/, '.pdf');
     logger.info('Typesetting file %s', outputFilename);
 
-    return fs.writeStreamToFile(
-      outputFilename,
-      latex(latexSource, TEX_OPTIONS)
-    ).then(() => outputFilename);
+    return TEX_OPTIONS.then(TEX_OPTIONS => {
+      return fs.writeStreamToFile(
+        outputFilename,
+        latex(latexSource, TEX_OPTIONS)
+      );
+    }).then(() => outputFilename);
   });
 };

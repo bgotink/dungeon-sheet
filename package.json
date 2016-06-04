@@ -36,6 +36,7 @@
     "latex": "0.0.1",
     "lodash": "^3.10.1",
     "log4js": "^0.6.29",
+    "which": "^1.2.9",
     "yargs": "^3.31.0"
   },
   "preferGlobal": true
