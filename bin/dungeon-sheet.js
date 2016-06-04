@@ -28,8 +28,16 @@ Logger.init(argv.verbose);
 
 const logger = Logger.getLogger(__filename);
 
-const createOutput = require(`../src/output/${argv.format}`);
 const loadCharacter = require('../src');
+
+const createOutput = (() => {
+  try {
+    return require(`../src/output/${argv.format}`);
+  } catch (e) {
+    logger.fatal('Unknown output format: %s, options are pdf or html', argv.format);
+    process.exit(1);
+  }
+})();
 
 argv._.forEach(function (filename) {
   logger.info('Loading character %s', filename);
