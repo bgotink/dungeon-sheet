@@ -1,4 +1,4 @@
-#!/usr/bin/env node --harmony --harmony_destructuring
+#!/usr/bin/env node
 'use strict';
 
 const argv = require('yargs')
